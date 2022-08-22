@@ -5,12 +5,14 @@ import { P1 } from '../components/welcome/P1'
 import { P2 } from '../components/welcome/P2'
 import { P3 } from '../components/welcome/P3'
 import { P4 } from '../components/welcome/P4'
+import { Welcome } from '../views/Welcome'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', component: Home },
   { path: '/about', component: About },
   {
     path: '/welcome',
+    component: Welcome,
     children: [
       { path: '1', component: P1 },
       { path: '2', component: P2 },
