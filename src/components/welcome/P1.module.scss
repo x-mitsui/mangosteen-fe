@@ -1,0 +1,38 @@
+.wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  > .card{
+    flex: 1;
+    background-color: var(--welcome-card-bg-color);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color:var(--welcome-card-text-color);
+    > .pig{
+      width: 128px;
+      margin:-20px auto 20px;
+    }
+  }
+  
+  > .actions{
+    font-size: 32px;
+    margin: 16px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    color:var(--welcome-text-color);
+    a:nth-child(2){
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+}
+
