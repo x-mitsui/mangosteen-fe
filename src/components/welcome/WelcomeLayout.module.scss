@@ -3,10 +3,10 @@
   display: flex;
   flex-direction: column;
   > .card{
-    flex: 1;
+    height: calc(100% - 64px - 16px);
     background-color: var(--welcome-card-bg-color);
     border-radius: 8px;
-    padding: 16px;
+    padding: var(--welcome-padding);
     margin: 16px;
 
     display: flex;
@@ -21,15 +21,21 @@
   }
   
   > .actions{
+    background-color: var(--welcome-bg-end-color);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
     font-size: 32px;
-    margin: 16px;
+    height: var(--welcome-nav-height);
+    padding: var(--welcome-padding);
+    
     display: flex;
     justify-content: center;
-    position: relative;
     color:var(--welcome-text-color);
     a:nth-child(2){
       position: absolute;
-      right: 0;
+      right: var(--welcome-padding);
       top: 50%;
       transform: translateY(-50%);
     }

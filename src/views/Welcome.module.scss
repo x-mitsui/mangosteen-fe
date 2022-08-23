@@ -1,22 +1,21 @@
 .wrapper {
+  // 
   color: #d4d4ee;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-image: linear-gradient(to bottom,rgb(96, 53, 185),rgb(150, 77, 209));
+  height: calc(100vh - var(--welcome-nav-height) + 64px);
+  background-image: linear-gradient(to bottom,var(--welcome-bg-start-color),var(--welcome-bg-end-color));
 
   > header{
-
     text-align: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    padding-top: 66px;
+    padding-top: 36px;
   }
   > main{
-
+    
     flex: 1;
     display: flex;
     flex-direction: column;
