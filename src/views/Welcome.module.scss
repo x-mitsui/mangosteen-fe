@@ -22,12 +22,12 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    position: relative;
+    margin: 16px;
     .card {
       height: calc(100% - 80px);
       background-color: var(--welcome-card-bg-color);
       border-radius: 8px;
-      padding: var(--welcome-padding);
-      margin: 16px;
 
       display: flex;
       flex-direction: column;
