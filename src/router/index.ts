@@ -1,9 +1,16 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import { P1 } from '../components/welcome/P1'
-import { P2 } from '../components/welcome/P2'
-import { P3 } from '../components/welcome/P3'
-import { P4 } from '../components/welcome/P4'
+import { P1Main } from '../components/welcome/P1Main'
+import { P1Footer } from '../components/welcome/P1Footer'
+// import { P2 } from '../components/welcome/P2'
+// import { P3 } from '../components/welcome/P3'
+// import { P4 } from '../components/welcome/P4'
 import { Welcome } from '../views/Welcome'
+import { P2Main } from '../components/welcome/P2Main'
+import { P3Main } from '../components/welcome/P3Main'
+import { P4Main } from '../components/welcome/P4Main'
+import { P2Footer } from '../components/welcome/P2Footer'
+import { P3Footer } from '../components/welcome/P3Footer'
+import { P4Footer } from '../components/welcome/P4Footer'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/welcome' },
@@ -12,10 +19,10 @@ const routes: RouteRecordRaw[] = [
     component: Welcome,
     children: [
       { path: '', redirect: '/welcome/1' },
-      { path: '1', component: P1 },
-      { path: '2', component: P2 },
-      { path: '3', component: P3 },
-      { path: '4', component: P4 }
+      { path: '1', components: { main: P1Main, footer: P1Footer } },
+      { path: '2', components: { main: P2Main, footer: P2Footer } },
+      { path: '3', components: { main: P3Main, footer: P3Footer } },
+      { path: '4', components: { main: P4Main, footer: P4Footer } }
     ]
   }
 ]
