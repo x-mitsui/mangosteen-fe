@@ -1,5 +1,5 @@
-import { defineComponent, Transition } from 'vue'
-import { RouterView } from 'vue-router'
+import { defineComponent, Transition, VNode } from 'vue'
+import { RouteLocationNormalizedLoaded, RouterView } from 'vue-router'
 import s from './Welcome.module.scss'
 import logo from '../assets/icons/mangosteen.svg'
 export const Welcome = defineComponent({
@@ -12,10 +12,22 @@ export const Welcome = defineComponent({
         </header>
         <main>
           <RouterView name="main">
-            {(Comp: any) => {
+            {({
+              Component: Comp,
+              route: R
+            }: {
+              Component: VNode
+              route: RouteLocationNormalizedLoaded
+            }) => {
               return (
-                <Transition name="slide-fade">
-                  <Comp.Component />
+                <Transition
+                  name="slide-fade"
+                  enterActiveClass={s.slide_fade_enter_active}
+                  enterFromClass={s.slide_fade_enter_from}
+                  leaveActiveClass={s.slide_fade_leave_active}
+                  leaveToClass={s.slide_fade_leave_to}
+                >
+                  {Comp}
                 </Transition>
               )
             }}

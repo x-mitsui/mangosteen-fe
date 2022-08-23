@@ -63,3 +63,22 @@
     }
   }
 }
+
+.slide_fade_enter_active,
+.slide_fade_leave_active {
+  transition: all 1s ease-out;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.slide_fade_enter_from {
+  transform: translateX(100vw);
+  opacity: 0;
+}
+.slide_fade_leave_to {
+  transform: translateX(-100vw);
+  opacity: 0;
+}
