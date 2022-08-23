@@ -8,3 +8,4 @@ const slots = {
   title2: () => <h2>再也不怕数据丢失</h2>
 }
 export const P4Main = () => <WelcomeMain v-slots={slots}></WelcomeMain>
+P4Main.displayName = 'P4Main'

@@ -10,3 +10,4 @@ const slots = {
   )
 }
 export const P3Footer = () => <WelcomeFooter v-slots={slots}></WelcomeFooter>
+P3Footer.displayName = 'P3Footer'

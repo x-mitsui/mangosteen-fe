@@ -8,3 +8,4 @@ const slots = {
   title2: () => <h2>还要会省钱</h2>
 }
 export const P1Main = () => <WelcomeMain v-slots={slots}></WelcomeMain>
+P1Main.displayName = 'P1Main'

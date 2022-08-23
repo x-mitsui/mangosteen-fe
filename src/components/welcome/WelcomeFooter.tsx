@@ -3,10 +3,6 @@ import s from '../../views/Welcome.module.scss'
 export const WelcomeFooter = defineComponent({
   setup(props, context) {
     const { slots } = context
-    return () => (
-      // <div class={s.wrapper}>
-      <div class={s.footer}>{slots.buttons?.()}</div>
-      // </div>
-    )
+    return () => <div class={s.footer}>{slots.buttons?.()}</div>
   }
 })
