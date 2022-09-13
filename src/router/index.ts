@@ -19,10 +19,10 @@ const routes: RouteRecordRaw[] = [
     component: Welcome,
     children: [
       { path: '', redirect: '/welcome/1' },
-      { path: '1', components: { main: P1Main, footer: P1Footer } },
-      { path: '2', components: { main: P2Main, footer: P2Footer } },
-      { path: '3', components: { main: P3Main, footer: P3Footer } },
-      { path: '4', components: { main: P4Main, footer: P4Footer } }
+      { path: '1', name: 'Welcome1', components: { main: P1Main, footer: P1Footer } },
+      { path: '2', name: 'Welcome2', components: { main: P2Main, footer: P2Footer } },
+      { path: '3', name: 'Welcome3', components: { main: P3Main, footer: P3Footer } },
+      { path: '4', name: 'Welcome4', components: { main: P4Main, footer: P4Footer } }
     ]
   }
 ]

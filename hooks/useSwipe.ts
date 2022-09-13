@@ -1,6 +1,14 @@
-import { ref, Ref, onMounted, computed } from 'vue'
+import { ref, Ref, onMounted, computed, onUnmounted } from 'vue'
 type Point = { x: number; y: number }
-export const useSwipe = (element: Ref<HTMLElement | null>) => {
+interface Options {
+  beforeStart?(e: TouchEvent): void
+  afterStart?(e: TouchEvent): void
+  beforeMove?(e: TouchEvent): void
+  afterMove?(e: TouchEvent): void
+  beforeEnd?(e: TouchEvent): void
+  afterEnd?(e: TouchEvent): void
+}
+export const useSwipe = (element: Ref<HTMLElement | null>, options?: Options) => {
   const StartPoint = ref<Point | null>(null)
   const EndPoint = ref<Point | null>(null)
   const isSwipping = ref(false)
@@ -35,34 +43,50 @@ export const useSwipe = (element: Ref<HTMLElement | null>) => {
       }
     }
   })
+  const onStart = (e: TouchEvent) => {
+    options?.beforeStart?.(e)
+    console.log('touchstart')
+    StartPoint.value = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
+    }
+
+    EndPoint.value = {
+      x: 0,
+      y: 0
+    }
+    isSwipping.value = true
+    options?.afterStart?.(e)
+  }
+  const onMove = (e: TouchEvent) => {
+    options?.beforeMove?.(e)
+    console.log('touchmove')
+    EndPoint.value = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
+    }
+    options?.afterMove?.(e)
+  }
+  const onEnd = (e: TouchEvent) => {
+    options?.beforeEnd?.(e)
+    console.log('touchend')
+    isSwipping.value = false
+    EndPoint.value = null
+    StartPoint.value = null
+    options?.afterEnd?.(e)
+  }
   // 节点挂载后
   onMounted(() => {
-    element.value?.addEventListener('touchstart', (e) => {
-      console.log('touchstart')
-      StartPoint.value = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
-      }
-
-      EndPoint.value = {
-        x: 0,
-        y: 0
-      }
-      isSwipping.value = true
-    })
-    element.value?.addEventListener('touchmove', (e) => {
-      console.log('touchmove')
-      EndPoint.value = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY
-      }
-    })
-    element.value?.addEventListener('touchend', () => {
-      console.log('touchend')
-      isSwipping.value = false
-      EndPoint.value = null
-      StartPoint.value = null
-    })
+    if (!element.value) return
+    element.value.addEventListener('touchstart', onStart)
+    element.value.addEventListener('touchmove', onMove)
+    element.value.addEventListener('touchend', onEnd)
+  })
+  onUnmounted(() => {
+    if (!element.value) return
+    element.value.removeEventListener('touchstart', onStart)
+    element.value.removeEventListener('touchmove', onMove)
+    element.value.removeEventListener('touchend', onEnd)
   })
   return { isSwipping, direction, distance }
 }

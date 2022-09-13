@@ -1,15 +1,33 @@
 import { defineComponent, ref, Transition, VNode, watch } from 'vue'
-import { RouteLocationNormalizedLoaded, RouterView } from 'vue-router'
+import { RouteLocationNormalizedLoaded, RouterView, useRoute, useRouter } from 'vue-router'
 import s from './Welcome.module.scss'
 import { useSwipe } from '../../hooks/useSwipe'
+import { throttle } from '../shared/throttle'
+const PathTable: Record<string, string> = {
+  Welcome1: '/welcome/2',
+  Welcome2: '/welcome/3',
+  Welcome3: '/welcome/4',
+  Welcome4: '/start'
+}
 export const Welcome = defineComponent({
   setup(props, context) {
     const main = ref<HTMLElement | null>(null)
-    const { direction, distance, isSwipping } = useSwipe(main)
+    const { direction, isSwipping } = useSwipe(main, {
+      beforeStart: (e) => e.preventDefault()
+    })
+    const router = useRouter()
+    const route = useRoute()
+    const pushPage = throttle(() => {
+      if (isSwipping && direction.value === 'left') {
+        const key = (route.name ?? 'Welcome1').toString()
+        console.log(key)
+        router.push(PathTable[key])
+      }
+    }, 500)
     watch(
       direction,
       (newV) => {
-        console.log('方向:', direction.value)
+        pushPage()
       },
       { deep: true }
     )
