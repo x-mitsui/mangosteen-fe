@@ -11,6 +11,7 @@ import { P4Main } from '../components/welcome/P4Main'
 import { P2Footer } from '../components/welcome/P2Footer'
 import { P3Footer } from '../components/welcome/P3Footer'
 import { P4Footer } from '../components/welcome/P4Footer'
+import { StartPage } from '../views/startPage'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/welcome' },
@@ -24,7 +25,8 @@ const routes: RouteRecordRaw[] = [
       { path: '3', name: 'Welcome3', components: { main: P3Main, footer: P3Footer } },
       { path: '4', name: 'Welcome4', components: { main: P4Main, footer: P4Footer } }
     ]
-  }
+  },
+  { path: '/start', component: StartPage }
 ]
 
 export const router = createRouter({
