@@ -21,26 +21,24 @@ export const StartPage = defineComponent({
       refIsShowOverlay.value = !refIsShowOverlay.value
     }
     return () => (
-      <>
-        <MainLayout>
-          {{
-            title: () => '山竹记账',
-            icon: (kclass: string) => <Icon name="menu" class={kclass} onClick={setOverlay} />,
-            main: () => (
-              <>
-                <Center>
-                  <Icon name="pig" class={s.icon} />
-                </Center>
-                <div class={s.wrapper}>
-                  <Button onClick={onclick}>你好</Button>
-                </div>
-                <FloatButton IconName="add" to="/item/create" />
-                {refIsShowOverlay.value && <Overlay setOverlay={setOverlay} />}
-              </>
-            )
-          }}
-        </MainLayout>
-      </>
+      <MainLayout>
+        {{
+          title: () => '山竹记账',
+          icon: (kclass: string) => <Icon name="menu" class={kclass} onClick={setOverlay} />,
+          main: () => (
+            <>
+              <Center>
+                <Icon name="pig" class={s.icon} />
+              </Center>
+              <div class={s.wrapper}>
+                <Button onClick={onclick}>你好</Button>
+              </div>
+              <FloatButton IconName="add" to="/item/create" />
+              {refIsShowOverlay.value && <Overlay setOverlay={setOverlay} />}
+            </>
+          )
+        }}
+      </MainLayout>
     )
   }
 })

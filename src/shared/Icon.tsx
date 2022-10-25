@@ -11,6 +11,7 @@ export type IconProps =
   | 'charts'
   | 'export'
   | 'notify'
+  | 'back'
 export const Icon = defineComponent({
   props: {
     name: {
