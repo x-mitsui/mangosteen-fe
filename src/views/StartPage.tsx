@@ -1,17 +1,20 @@
 import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { MainLayout } from '../layouts/MainLayout'
+import { router } from '../router'
 import { Button } from '../shared/Button'
 import { Center } from '../shared/Center'
 import { FloatButton } from '../shared/FloatButton'
 import { Icon } from '../shared/Icon'
 import { NavBar } from '../shared/NavBar'
 import { Overlay } from '../shared/Overlay'
-import s from './startPage.module.scss'
+import s from './StartPage.module.scss'
 export const StartPage = defineComponent({
   setup(props, context) {
     const refIsShowOverlay = ref(false)
+    const router = useRouter()
     const onclick = () => {
-      console.log('hi')
+      router.push('/item/create')
     }
     const setOverlay = () => {
       console.log('setOverlay')
@@ -31,7 +34,7 @@ export const StartPage = defineComponent({
                 <div class={s.wrapper}>
                   <Button onClick={onclick}>你好</Button>
                 </div>
-                <FloatButton IconName="add" />
+                <FloatButton IconName="add" to="/item/create" />
                 {refIsShowOverlay.value && <Overlay setOverlay={setOverlay} />}
               </>
             )
