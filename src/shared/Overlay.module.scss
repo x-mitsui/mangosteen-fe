@@ -1,0 +1,54 @@
+.wrapper {
+  position: fixed;
+  left: 0;
+  top: var(--top-safe-area-height);
+  width: 100%;
+  height: calc(100% - var(--top-safe-area-height));
+  .showPage {
+    width: 70%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    z-index: var(--overlay-z-index);
+    section {
+      background-color: var(--overlay-user-bg);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      color: var(--overlay-user-text);
+      padding-left: 12px;
+      padding-top: 20px;
+      height: 120px;
+      .up {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .down {
+        font-size: 16px;
+      }
+    }
+    .funcList {
+      background-color: var(--overlay-bg);
+      font-size: 20px;
+      height: calc(100% - 120px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: 40px;
+      .item {
+        margin-bottom: 40px;
+        > * {
+          margin-left: 14px;
+        }
+      }
+    }
+  }
+  .mask {
+    z-index: var(--overlay-mask-z-index);
+    position: fixed;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--mask-color);
+  }
+}

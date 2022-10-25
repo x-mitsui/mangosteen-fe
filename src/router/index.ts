@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
       { path: '4', name: 'Welcome4', components: { main: P4Main, footer: P4Footer } }
     ]
   },
-  { path: '/start', component: StartPage }
+  { path: '/start', name: 'start', component: StartPage }
 ]
 
 export const router = createRouter({

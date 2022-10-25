@@ -11,4 +11,11 @@
   --button-fontsize: 18px;
   --button-radius: 8px;
   --button-height: 48px;
+  --mask-color: rgba(0, 0, 0, 0.5);
+  --overlay-mask-z-index: 8;
+  --overlay-z-index: 16;
+  --overlay-bg: white;
+  --overlay-user-bg: #5c33be;
+  --overlay-user-text: white;
+  --top-safe-area-height: 24px;
 }
