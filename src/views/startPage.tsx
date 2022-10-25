@@ -1,4 +1,5 @@
 import { defineComponent, ref } from 'vue'
+import { MainLayout } from '../layouts/MainLayout'
 import { Button } from '../shared/Button'
 import { Center } from '../shared/Center'
 import { FloatButton } from '../shared/FloatButton'
@@ -18,20 +19,24 @@ export const StartPage = defineComponent({
     }
     return () => (
       <>
-        <NavBar>
+        <MainLayout>
           {{
-            default: () => '山竹记账',
-            icon: (kclass: string) => <Icon name="menu" class={kclass} onClick={setOverlay} />
+            title: () => '山竹记账',
+            icon: (kclass: string) => <Icon name="menu" class={kclass} onClick={setOverlay} />,
+            main: () => (
+              <>
+                <Center>
+                  <Icon name="pig" class={s.icon} />
+                </Center>
+                <div class={s.wrapper}>
+                  <Button onClick={onclick}>你好</Button>
+                </div>
+                <FloatButton IconName="add" />
+                {refIsShowOverlay.value && <Overlay setOverlay={setOverlay} />}
+              </>
+            )
           }}
-        </NavBar>
-        <Center>
-          <Icon name="pig" class={s.icon} />
-        </Center>
-        <div class={s.wrapper}>
-          <Button onClick={onclick}>你好</Button>
-        </div>
-        <FloatButton IconName="add" />
-        {refIsShowOverlay.value && <Overlay setOverlay={setOverlay} />}
+        </MainLayout>
       </>
     )
   }
