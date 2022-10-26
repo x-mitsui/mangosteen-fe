@@ -12,7 +12,7 @@ export const MainLayout = defineComponent({
             icon
           }}
         </NavBar>
-        <div>{main?.()}</div>
+        <div class={s.main_bg}>{main?.()}</div>
       </div>
     )
   }

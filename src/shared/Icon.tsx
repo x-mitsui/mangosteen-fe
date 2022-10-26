@@ -12,6 +12,7 @@ export type IconProps =
   | 'export'
   | 'notify'
   | 'back'
+  | 'note'
 export const Icon = defineComponent({
   props: {
     name: {
