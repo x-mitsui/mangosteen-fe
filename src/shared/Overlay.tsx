@@ -2,6 +2,7 @@ import { defineComponent, PropType } from 'vue'
 import { Icon } from './Icon'
 import s from './Overlay.module.scss'
 export const Overlay = defineComponent({
+  name: 'Overlay',
   props: {
     setOverlay: {
       type: Function as PropType<(e: MouseEvent) => void>

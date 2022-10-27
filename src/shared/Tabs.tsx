@@ -1,6 +1,7 @@
 import { defineComponent, onMounted, PropType } from 'vue'
 import s from './Tabs.module.scss'
 export const Tabs = defineComponent({
+  name: 'Tab',
   props: {
     selected: {
       type: String,

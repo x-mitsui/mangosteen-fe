@@ -10,6 +10,7 @@ import { NavBar } from '../shared/NavBar'
 import { Overlay } from '../shared/Overlay'
 import s from './StartPage.module.scss'
 export const StartPage = defineComponent({
+  name: 'StartPage',
   setup(props, context) {
     const refIsShowOverlay = ref(false)
     const router = useRouter()

@@ -10,6 +10,7 @@ const PathTable: Record<string, string> = {
   Welcome4: '/start'
 }
 export const Welcome = defineComponent({
+  name: 'Welcome',
   setup(props, context) {
     const main = ref<HTMLElement | null>(null)
     const { direction, isSwipping } = useSwipe(main, {

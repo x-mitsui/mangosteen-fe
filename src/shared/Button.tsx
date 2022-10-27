@@ -5,6 +5,7 @@ interface Props {
 }
 
 export const Button = defineComponent<'class' | 'onClick', {}, {}>({
+  name: 'Button',
   inheritAttrs: false,
   props: ['class', 'onClick'],
   setup(props, context) {

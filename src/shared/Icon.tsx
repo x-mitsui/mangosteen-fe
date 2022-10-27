@@ -14,6 +14,7 @@ export type IconProps =
   | 'back'
   | 'note'
 export const Icon = defineComponent({
+  name: 'Icon',
   props: {
     name: {
       type: String as PropType<IconProps>,
