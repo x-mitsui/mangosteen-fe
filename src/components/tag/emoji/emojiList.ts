@@ -1,4 +1,5 @@
 type EmojiList = [string, string[]][]
+
 export const emojiList: EmojiList = [
   [
     'face-smiling',
@@ -26,7 +27,7 @@ export const emojiList: EmojiList = [
       '\u{1F929}',
       '\u{1F618}',
       '\u{1F617}',
-      '\u{263A}',
+      '\u{263A}\u{FE0F}',
       '\u{1F61A}',
       '\u{1F619}'
     ]
