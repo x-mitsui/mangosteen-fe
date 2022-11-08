@@ -4,18 +4,27 @@
     display: flex;
     flex-direction: column;
 
-    .title {
-      margin-bottom: 3px;
-    }
-    .input {
-      min-height: var(--input-min-height);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      font-size: 18px;
-      font-family: inherit;
-      padding-left: 16px;
-      padding-right: 16px;
-      box-shadow: inset 0 0 3px var(--input-shadow);
+    .formItem {
+      &_name {
+        margin-bottom: 3px;
+      }
+      &_value {
+        .formInput {
+          width: 100%;
+          min-height: var(--input-min-height);
+          border: 1px solid var(--border-color);
+          border-radius: 10px;
+          font-size: 18px;
+          font-family: inherit;
+          padding-left: 16px;
+          padding-right: 16px;
+          box-shadow: inset 0 0 3px var(--input-shadow);
+        }
+      }
+      &_error {
+        color: red;
+        font-size: 12px;
+      }
     }
   }
   .tips {
