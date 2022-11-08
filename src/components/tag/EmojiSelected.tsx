@@ -12,18 +12,22 @@ export const EmojiSelected = defineComponent({
     }
   },
   setup(props, context) {
-    const refIndex = ref(0)
+    const refTitleIndex = ref(0)
+    const refSelectedEmojiIndex = ref<null | number>(null)
 
     const selectTitle = (index: number) => {
-      refIndex.value = index
+      refTitleIndex.value = index
     }
-    const selectEmoji = (emojiItem: string) => {
+    const selectEmoji = (emojiItem: string, index: number) => {
       context.emit('update:modelValue', emojiItem)
+
+      refSelectedEmojiIndex.value = index
     }
     const widthSet = () => {
       return { width: props.emojiTable.length * 50 + 'px' }
     }
-    const getClass = (index: number) => computed(() => (refIndex.value === index ? s.selected : ''))
+    const getClass = (index: number) =>
+      computed(() => (refTitleIndex.value === index ? s.selected : ''))
 
     return () => (
       <div class={s.wrapper}>
@@ -43,9 +47,15 @@ export const EmojiSelected = defineComponent({
         </div>
 
         <ul class={s.emojisWrapper}>
-          {props.emojiTable[refIndex.value][1].map((emojiItem) => {
+          {props.emojiTable[refTitleIndex.value][1].map((emojiItem, index) => {
             return (
-              <li class={s.emojiItem} onClick={() => selectEmoji(emojiItem)}>
+              <li
+                class={[
+                  'emoji-font-conf',
+                  index === refSelectedEmojiIndex.value && s.selectedEmoji
+                ]}
+                onClick={() => selectEmoji(emojiItem, index)}
+              >
                 {emojiItem}
               </li>
             )
