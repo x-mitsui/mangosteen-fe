@@ -12,41 +12,44 @@ export const Tabs = defineComponent({
       required: true
     }
   },
-  setup(props, context) {
-    // if (context.slots.default === undefined) {
-    //   return () => null
-    // }
-    // const vDoms = context.slots.default()
-    // vDoms?.forEach((vDom) => {
-    //   console.log(typeof Tab)
-    //   console.log(typeof vDom.type)
-    //   console.log(vDom.type === Tab)
-    //   if (vDom.type !== Tab) {
-    //     throw new Error('Tabs组件必须使用Tab组件')
-    //   }
-    // })
+  setup: (props, context) => {
+    return () => {
+      const tabs = context.slots.default?.()
+      if (!tabs) {
+        return () => null
+      }
+      tabs?.forEach((tab) => {
+        console.log(typeof Tab)
+        console.log(typeof tab.type)
+        console.log(tab.type === Tab)
+        if (tab.type !== Tab) {
+          throw new Error('Tabs组件必须使用Tab组件')
+        }
+      })
 
-    return () => (
-      <div class={s.wrapper}>
-        <ul class={s.list}>
-          {context.slots.default?.()?.map((vDom, index) => {
-            return (
-              <li
-                key={index}
-                class={[props.selected === vDom.props?.name && s.bgColor, s.item]}
-                onClick={() => {
-                  console.log(vDom.props?.name)
+      return (
+        <div class={s.wrapper}>
+          <ul class={s.list}>
+            {tabs?.map((tab, index) => {
+              return (
+                <li
+                  key={index}
+                  class={[props.selected === tab.props?.name && s.bgColor, s.item]}
+                  onClick={() => {
+                    console.log(tab.props?.name)
 
-                  props.onUpdateValue?.(vDom.props?.name)
-                }}
-              >
-                {vDom}
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-    )
+                    props.onUpdateValue?.(tab.props?.name)
+                  }}
+                >
+                  {tab.props?.name}
+                </li>
+              )
+            })}
+          </ul>
+          <div>{tabs.find((tab) => props.selected === tab.props?.name)}</div>
+        </div>
+      )
+    }
   }
 })
 
