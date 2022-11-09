@@ -68,7 +68,7 @@ export const ItemCreate = defineComponent({
           icon: (kclass: string) => <Icon name="back" class={kclass} onClick={goBack} />,
           main: () => (
             <>
-              <Tabs selected={refSelectedValue.value} onUpdateValue={onUpdateValue}>
+              <Tabs v-model:selected={refSelectedValue.value}>
                 <Tab name="收入">
                   <div class={s.tag}>
                     <div class={s.sign}>
@@ -76,6 +76,14 @@ export const ItemCreate = defineComponent({
                     </div>
                     <span class={s.name}>新增</span>
                   </div>
+                  {refExpensesTags.value.map((tag) => {
+                    return (
+                      <div class={s.tag}>
+                        <div class={s.sign}>{tag.sign}</div>
+                        <span class={s.name}>{tag.name}</span>
+                      </div>
+                    )
+                  })}
                 </Tab>
                 <Tab name="支出">支出</Tab>
               </Tabs>

@@ -5,12 +5,12 @@ export const Tabs = defineComponent({
   props: {
     selected: {
       type: String,
-      required: true
-    },
-    onUpdateValue: {
-      type: Function as PropType<(val: string) => void>,
-      required: true
+      required: false
     }
+    // onUpdateValue: {
+    //   type: Function as PropType<(val: string) => void>,
+    //   required: false
+    // }
   },
   setup: (props, context) => {
     return () => {
@@ -37,8 +37,7 @@ export const Tabs = defineComponent({
                   class={[props.selected === tab.props?.name && s.bgColor, s.item]}
                   onClick={() => {
                     console.log(tab.props?.name)
-
-                    props.onUpdateValue?.(tab.props?.name)
+                    context.emit('update:selected', tab.props?.name)
                   }}
                 >
                   {tab.props?.name}
