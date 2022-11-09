@@ -7,7 +7,7 @@ import { InfoInput } from './InfoInput'
 import s from './ItemCreate.module.scss'
 export const ItemCreate = defineComponent({
   setup(props, context) {
-    const refSelectedValue = ref('')
+    const refSelectedValue = ref('支出')
     const router = useRouter()
     const refExpensesTags = ref([
       { id: 1, name: '餐费', sign: '￥', category: 'expenses' },
@@ -67,10 +67,10 @@ export const ItemCreate = defineComponent({
           title: () => '记一笔',
           icon: (kclass: string) => <Icon name="back" class={kclass} onClick={goBack} />,
           main: () => (
-            <>
-              <Tabs v-model:selected={refSelectedValue.value}>
-                <Tab name="收入">
-                  <div class={s.tag}>
+            <div class={s.wrapper}>
+              <Tabs v-model:selected={refSelectedValue.value} class={s.tabs}>
+                <Tab name="支出" class={s.tags_wrapper}>
+                  <div class={[s.tag, s.selected]}>
                     <div class={s.sign}>
                       <Icon name="add"></Icon>
                     </div>
@@ -85,10 +85,27 @@ export const ItemCreate = defineComponent({
                     )
                   })}
                 </Tab>
-                <Tab name="支出">支出</Tab>
+                <Tab name="收入" class={s.tags_wrapper}>
+                  <div class={[s.tag, s.selected]}>
+                    <div class={s.sign}>
+                      <Icon name="add"></Icon>
+                    </div>
+                    <span class={s.name}>新增</span>
+                  </div>
+                  {refIncomeTags.value.map((tag) => {
+                    return (
+                      <div class={s.tag}>
+                        <div class={s.sign}>{tag.sign}</div>
+                        <span class={s.name}>{tag.name}</span>
+                      </div>
+                    )
+                  })}
+                </Tab>
               </Tabs>
-              <InfoInput></InfoInput>
-            </>
+              <div class={s.inputPad_wrapper}>
+                <InfoInput />
+              </div>
+            </div>
           )
         }}
       </MainLayout>

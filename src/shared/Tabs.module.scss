@@ -8,6 +8,9 @@
   .list {
     display: flex;
     background-color: var(--welcome-bg-end-color);
+    position: sticky;
+    z-index: 1;
+    top: 0;
     > .item {
       box-sizing: border-box;
       flex: 1;

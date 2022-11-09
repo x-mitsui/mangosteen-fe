@@ -45,7 +45,7 @@ export const Tabs = defineComponent({
               )
             })}
           </ul>
-          <div>{tabs.find((tab) => props.selected === tab.props?.name)}</div>
+          {tabs.find((tab) => props.selected === tab.props?.name)}
         </div>
       )
     }
