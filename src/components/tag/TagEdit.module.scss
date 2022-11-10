@@ -1,0 +1,8 @@
+.action {
+  padding: 0px 8px 24px 8px;
+  display: flex;
+  justify-content: space-between;
+  &Btn {
+    width: calc(50vw - 12px);
+  }
+}
