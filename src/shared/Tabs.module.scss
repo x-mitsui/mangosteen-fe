@@ -4,18 +4,17 @@
   .bgColor {
     border-bottom: 4px solid #ffffff77;
   }
-
-  .list {
-    display: flex;
-    background-color: var(--welcome-bg-end-color);
-    position: sticky;
-    z-index: 1;
-    top: 0;
-    > .item {
-      box-sizing: border-box;
-      flex: 1;
-      text-align: center;
-      color: var(--button-text-color);
-    }
-  }
+}
+.tabs_nav {
+  display: flex;
+  background-color: var(--welcome-bg-end-color);
+  position: sticky;
+  z-index: 1;
+  top: 0;
+}
+.tabs_nav_item {
+  box-sizing: border-box;
+  flex-grow: 1;
+  text-align: center;
+  color: var(--button-text-color);
 }
