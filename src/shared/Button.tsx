@@ -7,6 +7,9 @@ export const Button = defineComponent({
     kind: {
       type: String as PropType<'danger' | 'important' | 'default'>,
       default: 'default'
+    },
+    onClick: {
+      type: Function as PropType<(e: Event) => void>
     }
   },
   setup(props, context) {
