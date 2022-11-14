@@ -9,6 +9,8 @@
   --button-radius: 8px;
   --button-text-color: #fff;
   --date-text: #999999;
+  --bg: white;
+  --overlay-mask-bg: rgba(0, 0, 0, 0.5);
   --error-color: #e10505;
   --income-color: #53a867;
   --input-border-color: #5c33be;
@@ -22,6 +24,8 @@
   --list-tag-text: #333;
   --list-time-text: var(--date-text);
   --main-bg-color: #ddd;
+  --main: #5c33be;
+  --dialog-header-text: white;
   --mask-color: rgba(0, 0, 0, 0.5);
   --overlay-bg: white;
   --overlay-mask-z-index: 8;

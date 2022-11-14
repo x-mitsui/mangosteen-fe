@@ -8,7 +8,7 @@ export const EmojiSelected = defineComponent({
       required: true
     },
     modelValue: {
-      type: String
+      type: String as PropType<string>
     }
   },
   setup(props, context) {

@@ -1,14 +1,16 @@
 import { defineComponent, PropType } from 'vue'
 import { emojiTable } from '../components/tag/emoji/EmojiTable'
 import { EmojiSelected } from '../components/tag/EmojiSelected'
+import { DateSelector } from './DateSelector'
 import s from './Form.module.scss'
+import { Time } from './time'
 type KindType = 'text' | 'emojiSelected' | 'date' | undefined
 export const FormItem = defineComponent({
   name: 'FormItem',
   props: {
     kind: { type: String as PropType<KindType> },
     label: { type: String as PropType<string> },
-    modelValue: { type: String as PropType<string> },
+    modelValue: { type: Object as PropType<string | InstanceType<typeof Time>> },
     errors: { type: String as PropType<string> }
   },
   setup(props, context) {
@@ -28,7 +30,25 @@ export const FormItem = defineComponent({
           )
 
         case 'emojiSelected':
-          return <EmojiSelected emojiTable={emojiTable} v-model={props.modelValue} />
+          return (
+            <EmojiSelected
+              emojiTable={emojiTable}
+              modelValue={props.modelValue?.toString()}
+              onUpdate:model-value={(emojiItem: string) => {
+                context.emit('update:model-value', emojiItem)
+              }}
+            />
+          )
+        case 'date':
+          return (
+            <DateSelector
+              modelValue={props.modelValue as InstanceType<typeof Time>}
+              onUpdate:model-value={(date: Date) => {
+                console.log(date)
+                context.emit('update:model-value', date)
+              }}
+            ></DateSelector>
+          )
         case undefined:
           return context.slots.default?.()
       }
@@ -46,6 +66,11 @@ export const FormItem = defineComponent({
 })
 export const Form = defineComponent({
   name: 'Form',
+  props: {
+    onSubmit: {
+      type: Function as PropType<(e: Event) => void>
+    }
+  },
   setup(props, context) {
     return () => {
       const formItems = context.slots.default?.()
@@ -59,10 +84,8 @@ export const Form = defineComponent({
         }
       })
       return (
-        <form class={s.wrapper}>
-          {formItems?.map((formItem) => {
-            return formItem
-          })}
+        <form onSubmit={props.onSubmit} class={s.wrapper}>
+          {formItems}
         </form>
       )
     }
