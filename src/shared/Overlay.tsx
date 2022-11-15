@@ -1,4 +1,4 @@
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 import { Icon } from './Icon'
 import s from './Overlay.module.scss'
 export const Overlay = defineComponent({
@@ -33,6 +33,27 @@ export const Overlay = defineComponent({
         </div>
         <div class={s.mask} onClick={props.setOverlay}></div>
       </div>
+    )
+  }
+})
+
+export const OverlayIcon = defineComponent({
+  name: 'OverlayIcon',
+  props: {
+    kclass: String
+  },
+  emits: ['update:model-IsShowOverlay'],
+  setup(props, context) {
+    const refIsShowOverlay = ref(false)
+    const setOverlay = () => {
+      console.log('setOverlay')
+      refIsShowOverlay.value = !refIsShowOverlay.value
+    }
+    return () => (
+      <>
+        <Icon name="menu" class={props.kclass} onClick={setOverlay} />
+        {refIsShowOverlay.value && <Overlay setOverlay={setOverlay} />}
+      </>
     )
   }
 })

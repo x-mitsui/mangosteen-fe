@@ -1,5 +1,7 @@
 :root {
   --amount-text: #53a867;
+  --app-name-text: #7878ff;
+  --bg: white;
   --border-color: #5c33be;
   --button-border-color: #ddd;
   --button-color-danger: #be3333;
@@ -9,8 +11,7 @@
   --button-radius: 8px;
   --button-text-color: #fff;
   --date-text: #999999;
-  --bg: white;
-  --overlay-mask-bg: rgba(0, 0, 0, 0.5);
+  --dialog-header-text: white;
   --error-color: #e10505;
   --income-color: #53a867;
   --input-border-color: #5c33be;
@@ -25,9 +26,9 @@
   --list-time-text: var(--date-text);
   --main-bg-color: #ddd;
   --main: #5c33be;
-  --dialog-header-text: white;
   --mask-color: rgba(0, 0, 0, 0.5);
   --overlay-bg: white;
+  --overlay-mask-bg: rgba(0, 0, 0, 0.5);
   --overlay-mask-z-index: 8;
   --overlay-user-bg: #5c33be;
   --overlay-user-text: white;
@@ -45,4 +46,6 @@
   --welcome-nav-height: 64px;
   --welcome-padding: 16px;
   --welcome-text-color: #fff;
+  --z-index-navbar: 32;
+  --van-overlay-z-index: 64 !important;
 }

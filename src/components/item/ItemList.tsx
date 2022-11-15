@@ -3,6 +3,7 @@ import { defineComponent, ref } from 'vue'
 import { MainLayout } from '../../layouts/MainLayout'
 import { Form, FormItem } from '../../shared/Form'
 import { Icon } from '../../shared/Icon'
+import { OverlayIcon } from '../../shared/Overlay'
 import { Tab, Tabs } from '../../shared/Tabs'
 import { Time } from '../../shared/time'
 import s from './ItemList.module.scss'
@@ -26,7 +27,7 @@ export const ItemList = defineComponent({
       <MainLayout>
         {{
           title: () => '山竹记账',
-          icon: (kclass: string) => <Icon name="menu" class={kclass}></Icon>,
+          icon: (kclass: string) => <OverlayIcon kclass={kclass} />,
           main: () => (
             <div>
               <Tabs
