@@ -3,6 +3,7 @@
   .nav_bar {
     position: sticky;
     top: 0;
+    z-index: var(--z-index-navbar);
   }
   .main_bg {
     // background-color: var(--main-bg-color);
