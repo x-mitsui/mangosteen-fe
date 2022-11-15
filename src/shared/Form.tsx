@@ -5,7 +5,7 @@ import { Button } from './Button'
 import { DateSelector } from './DateSelector'
 import s from './Form.module.scss'
 import { Time } from './time'
-type KindType = 'text' | 'emojiSelected' | 'date' | 'validationCode' | undefined
+type KindType = 'text' | 'emojiSelected' | 'date' | 'validationCode' | 'select' | undefined
 export const FormItem = defineComponent({
   name: 'FormItem',
   props: {
@@ -13,7 +13,8 @@ export const FormItem = defineComponent({
     label: { type: String as PropType<string> },
     modelValue: [Object, String] as PropType<string | InstanceType<typeof Time>>,
     errors: { type: String as PropType<string>, default: '　' },
-    placeholder: String
+    placeholder: String,
+    options: Array as PropType<Array<{ value: string; text: string }>>
   },
   setup(props, context) {
     const content = (kind: KindType) => {
@@ -56,6 +57,20 @@ export const FormItem = defineComponent({
               <input class={[s.formInput, s.validationCodeInput]} placeholder={props.placeholder} />
               <Button class={[s.validationCodeButton]}>发送验证码</Button>
             </div>
+          )
+        case 'select':
+          return (
+            <select
+              class={s.select}
+              value={props.modelValue}
+              onChange={(e: any) => {
+                context.emit('update:modelValue', e.target.value)
+              }}
+            >
+              {props.options?.map((option) => (
+                <option value={option.value}>{option.text}</option>
+              ))}
+            </select>
           )
         case undefined:
           return context.slots.default?.()
