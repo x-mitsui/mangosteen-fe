@@ -1,17 +1,19 @@
 import { defineComponent, PropType } from 'vue'
 import { emojiTable } from '../components/tag/emoji/EmojiTable'
 import { EmojiSelected } from '../components/tag/EmojiSelected'
+import { Button } from './Button'
 import { DateSelector } from './DateSelector'
 import s from './Form.module.scss'
 import { Time } from './time'
-type KindType = 'text' | 'emojiSelected' | 'date' | undefined
+type KindType = 'text' | 'emojiSelected' | 'date' | 'validationCode' | undefined
 export const FormItem = defineComponent({
   name: 'FormItem',
   props: {
     kind: { type: String as PropType<KindType> },
     label: { type: String as PropType<string> },
-    modelValue: { type: Object as PropType<string | InstanceType<typeof Time>> },
-    errors: { type: String as PropType<string> }
+    modelValue: [Object, String] as PropType<string | InstanceType<typeof Time>>,
+    errors: { type: String as PropType<string>, default: '　' },
+    placeholder: String
   },
   setup(props, context) {
     const content = (kind: KindType) => {
@@ -28,7 +30,6 @@ export const FormItem = defineComponent({
               }}
             />
           )
-
         case 'emojiSelected':
           return (
             <EmojiSelected
@@ -44,10 +45,17 @@ export const FormItem = defineComponent({
             <DateSelector
               modelValue={props.modelValue as InstanceType<typeof Time>}
               onUpdate:model-value={(date: Date) => {
-                console.log(date)
+                // console.log(date)
                 context.emit('update:model-value', date)
               }}
             ></DateSelector>
+          )
+        case 'validationCode':
+          return (
+            <div class={s.validationCodeWrap}>
+              <input class={[s.formInput, s.validationCodeInput]} placeholder={props.placeholder} />
+              <Button class={[s.validationCodeButton]}>发送验证码</Button>
+            </div>
           )
         case undefined:
           return context.slots.default?.()
@@ -75,14 +83,14 @@ export const Form = defineComponent({
     return () => {
       const formItems = context.slots.default?.()
 
-      if (!formItems) {
-        return () => null
-      }
-      formItems?.forEach((formItem) => {
-        if (formItem.type !== FormItem) {
-          throw new Error('Form组件必须使用FormItem组件')
-        }
-      })
+      // if (!formItems) {
+      //   return () => null
+      // }
+      // formItems?.forEach((formItem) => {
+      //   if (formItem.type !== FormItem) {
+      //     throw new Error('Form组件必须使用FormItem组件')
+      //   }
+      // })
       return (
         <form onSubmit={props.onSubmit} class={s.wrapper}>
           {formItems}
