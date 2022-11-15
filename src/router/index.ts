@@ -18,6 +18,7 @@ import { ItemList } from '../components/item/ItemList'
 import { TagCreate } from '../components/tag/TagCreate'
 import { TagEdit } from '../components/tag/TagEdit'
 import { SignInPage } from '../views/SignInPage'
+import { Statistics } from '../components/statistics/StatisticsPage'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/welcome' },
@@ -71,6 +72,11 @@ const routes: RouteRecordRaw[] = [
     path: '/sign_in',
     name: 'sign_in',
     component: SignInPage
+  },
+  {
+    path: '/statistics',
+    name: 'statistics',
+    component: Statistics
   }
 ]
 
