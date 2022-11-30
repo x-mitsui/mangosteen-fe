@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { defineComponent, reactive } from 'vue'
 import { MainLayout } from '../layouts/MainLayout'
 import { Button } from '../shared/Button'
@@ -8,7 +9,7 @@ import s from './SignInPage.module.scss'
 export const SignInPage = defineComponent({
   setup: (props, context) => {
     const formData = reactive({
-      email: '',
+      email: 'x_mitsui@163.com',
       code: ''
     })
     const errors = reactive({
@@ -29,6 +30,11 @@ export const SignInPage = defineComponent({
           { key: 'code', type: 'required', message: '必填' }
         ])
       )
+    }
+    const onSendValidateCode = async (e: Event) => {
+      console.log('发送请求')
+      const res = await axios.post('/api/v1/validation_codes', { email: formData.email })
+      console.log('res:', res)
     }
     return () => (
       <MainLayout>
@@ -55,6 +61,8 @@ export const SignInPage = defineComponent({
                   placeholder="请输入六位数字"
                   v-model={formData.code}
                   errors={errors.code?.[0]}
+                  onClick={onSendValidateCode}
+                  timeFrom={3}
                 />
                 <FormItem style={{ paddingTop: '96px' }}>
                   <Button style={{ width: '100%' }}>登录</Button>

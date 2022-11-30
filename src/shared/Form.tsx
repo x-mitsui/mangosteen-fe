@@ -1,4 +1,4 @@
-import { defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 import { emojiTable } from '../components/tag/emoji/EmojiTable'
 import { EmojiSelected } from '../components/tag/EmojiSelected'
 import { Button } from './Button'
@@ -15,9 +15,24 @@ export const FormItem = defineComponent({
     errors: { type: String as PropType<string>, default: '　' },
     placeholder: String,
     options: Array as PropType<Array<{ value: string; text: string }>>,
-    onClick: { type: Function as PropType<(e: Event) => void> }
+    onClick: { type: Function as PropType<(e: Event) => void> },
+    timeFrom: { type: Number as PropType<number>, default: 60 }
   },
   setup(props, context) {
+    const timer = ref<number>(0)
+    // console.log(props.timeFrom)
+    const count = ref<number>(props.timeFrom)
+    const isCounting = computed(() => !!timer.value)
+    const sendCodeClick = () => {
+      props.onClick?.()
+      timer.value = setInterval(() => {
+        count.value--
+        if (count.value === 0) {
+          clearInterval(timer.value)
+          timer.value = 0
+        }
+      }, 1000)
+    }
     const content = (kind: KindType) => {
       switch (kind) {
         case 'text':
@@ -56,8 +71,12 @@ export const FormItem = defineComponent({
           return (
             <div class={s.validationCodeWrap}>
               <input class={[s.formInput, s.validationCodeInput]} placeholder={props.placeholder} />
-              <Button class={[s.validationCodeButton]} onClick={props.onClick}>
-                发送验证码
+              <Button
+                disabled={isCounting.value}
+                class={[s.validationCodeButton]}
+                onClick={sendCodeClick}
+              >
+                {isCounting.value ? `${count.value}秒后可再发送` : '发送验证码'}
               </Button>
             </div>
           )

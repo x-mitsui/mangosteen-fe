@@ -14,11 +14,15 @@ export const Button = defineComponent({
     },
     onClick: {
       type: Function as PropType<(e: Event) => void>
+    },
+    disabled: {
+      type: Boolean as PropType<boolean>
     }
   },
   setup(props, context) {
     return () => (
       <button
+        disabled={props.disabled}
         class={[s.button, s['button_' + props.kind]]}
         type={props.type}
         onClick={props.onClick}

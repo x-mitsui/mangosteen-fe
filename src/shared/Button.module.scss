@@ -11,3 +11,7 @@
     border: 1px solid var(--button-color-danger);
   }
 }
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
