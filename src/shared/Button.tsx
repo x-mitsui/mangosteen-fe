@@ -8,13 +8,21 @@ export const Button = defineComponent({
       type: String as PropType<'danger' | 'important' | 'default'>,
       default: 'default'
     },
+    type: {
+      type: String as PropType<'submit' | 'button'>,
+      default: 'button'
+    },
     onClick: {
       type: Function as PropType<(e: Event) => void>
     }
   },
   setup(props, context) {
     return () => (
-      <button class={[s.button, s['button_' + props.kind]]} onClick={props.onClick}>
+      <button
+        class={[s.button, s['button_' + props.kind]]}
+        type={props.type}
+        onClick={props.onClick}
+      >
         {context.slots.default?.()}
       </button>
     )

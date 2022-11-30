@@ -14,7 +14,8 @@ export const FormItem = defineComponent({
     modelValue: [Object, String] as PropType<string | InstanceType<typeof Time>>,
     errors: { type: String as PropType<string>, default: '　' },
     placeholder: String,
-    options: Array as PropType<Array<{ value: string; text: string }>>
+    options: Array as PropType<Array<{ value: string; text: string }>>,
+    onClick: { type: Function as PropType<(e: Event) => void> }
   },
   setup(props, context) {
     const content = (kind: KindType) => {
@@ -26,7 +27,7 @@ export const FormItem = defineComponent({
               class={s.formInput}
               placeholder="2到4个汉字"
               value={props.modelValue}
-              onUpdate:model-value={(e: any) => {
+              onInput={(e: any) => {
                 context.emit('update:model-value', e.target.value)
               }}
             />
@@ -55,7 +56,9 @@ export const FormItem = defineComponent({
           return (
             <div class={s.validationCodeWrap}>
               <input class={[s.formInput, s.validationCodeInput]} placeholder={props.placeholder} />
-              <Button class={[s.validationCodeButton]}>发送验证码</Button>
+              <Button class={[s.validationCodeButton]} onClick={props.onClick}>
+                发送验证码
+              </Button>
             </div>
           )
         case 'select':
