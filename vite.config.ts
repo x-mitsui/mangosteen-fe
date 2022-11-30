@@ -13,5 +13,16 @@ export default defineConfig({
       mergeProps: true
     }),
     svgstore()
-  ]
+  ],
+  server: {
+    // host: '0.0.0.0',
+    proxy: {
+      '/api/v1': {
+        target: 'http://192.168.1.4:3000'
+        // changeOrigin: true,
+        // secure: false
+        // rewrite: (path) => path.replace(/^\/api\/v1/, '')
+      }
+    }
+  }
 })
