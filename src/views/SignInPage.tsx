@@ -1,11 +1,12 @@
 import axios, { AxiosResponse } from 'axios'
 import { defineComponent, reactive, ref } from 'vue'
+import { useBool } from '../hooks/useBool'
 import { MainLayout } from '../layouts/MainLayout'
 import { Button } from '../shared/Button'
 import { Form, FormItem } from '../shared/Form'
 import { http } from '../shared/Http'
 import { Icon } from '../shared/Icon'
-import { validate } from '../shared/validate'
+import { hasError, validate } from '../shared/validate'
 import s from './SignInPage.module.scss'
 export const SignInPage = defineComponent({
   setup: (props, context) => {
@@ -18,7 +19,8 @@ export const SignInPage = defineComponent({
       code: []
     })
     const validationCodeRef = ref()
-    const onSubmit = (e: Event) => {
+
+    const onSubmit = async (e: Event) => {
       e.preventDefault()
       Object.assign(errors, {
         email: [],
@@ -32,6 +34,11 @@ export const SignInPage = defineComponent({
           { key: 'code', type: 'required', message: '必填' }
         ])
       )
+      if (hasError(errors)) {
+        return
+      }
+      const response = await http.post('/session', formData)
+      console.log(response)
     }
     const onError = (err: any) => {
       if (err.response.status === 422) {
@@ -39,15 +46,29 @@ export const SignInPage = defineComponent({
       }
       throw err //一直抛，一直抛，直到有人处理，或者决定不处理
     }
-    const refBtnDisabled = ref(false)
+    const { on: setBtnDisabled, off: setBtnEnabled, refVal } = useBool(false)
     const onSendValidateCode = async (e: Event) => {
-      console.log('发送请求')
-      refBtnDisabled.value = true
+      Object.assign(errors, {
+        email: []
+      })
+
+      Object.assign(
+        errors,
+        validate(formData, [
+          { key: 'email', type: 'required', message: '必填' },
+          { key: 'email', type: 'pattern', reg: /.+@.+/, message: '必须是邮箱地址' }
+        ])
+      )
+
+      if (hasError(errors)) {
+        return
+      }
+      setBtnDisabled()
       const res = await http
         .post('/validation_codes', { email: formData.email })
         .catch(onError)
         .finally(() => {
-          refBtnDisabled.value = false
+          setBtnEnabled()
         })
       validationCodeRef.value.sendCode()
       console.log('res:', res)
@@ -64,6 +85,7 @@ export const SignInPage = defineComponent({
                 <Icon class={s.icon} name="mangosteen" />
                 <h1 class={s.appName}>山竹记账</h1>
               </div>
+              <h2>{JSON.stringify(formData)}</h2>
               <Form onSubmit={onSubmit}>
                 <FormItem
                   label="邮箱地址"
@@ -80,11 +102,13 @@ export const SignInPage = defineComponent({
                   v-model={formData.code}
                   errors={errors.code?.[0]}
                   onClick={onSendValidateCode}
-                  buttonDisabled={refBtnDisabled.value}
+                  buttonDisabled={refVal.value}
                   timeFrom={3}
                 />
                 <FormItem style={{ paddingTop: '96px' }}>
-                  <Button style={{ width: '100%' }}>登录</Button>
+                  <Button style={{ width: '100%' }} type="submit">
+                    登录
+                  </Button>
                 </FormItem>
               </Form>
             </div>

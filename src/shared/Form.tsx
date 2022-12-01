@@ -72,7 +72,14 @@ export const FormItem = defineComponent({
         case 'validationCode':
           return (
             <div class={s.validationCodeWrap}>
-              <input class={[s.formInput, s.validationCodeInput]} placeholder={props.placeholder} />
+              <input
+                class={[s.formInput, s.validationCodeInput]}
+                placeholder={props.placeholder}
+                value={props.modelValue}
+                onInput={(e: any) => {
+                  context.emit('update:model-value', e.target.value)
+                }}
+              />
               <Button
                 disabled={props.buttonDisabled || isCounting.value}
                 class={[s.validationCodeButton]}
