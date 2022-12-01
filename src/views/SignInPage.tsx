@@ -1,8 +1,9 @@
-import axios from 'axios'
-import { defineComponent, reactive } from 'vue'
+import axios, { AxiosResponse } from 'axios'
+import { defineComponent, reactive, ref } from 'vue'
 import { MainLayout } from '../layouts/MainLayout'
 import { Button } from '../shared/Button'
 import { Form, FormItem } from '../shared/Form'
+import { http } from '../shared/Http'
 import { Icon } from '../shared/Icon'
 import { validate } from '../shared/validate'
 import s from './SignInPage.module.scss'
@@ -16,6 +17,7 @@ export const SignInPage = defineComponent({
       email: [],
       code: []
     })
+    const validationCodeRef = ref()
     const onSubmit = (e: Event) => {
       e.preventDefault()
       Object.assign(errors, {
@@ -31,11 +33,26 @@ export const SignInPage = defineComponent({
         ])
       )
     }
+    const onError = (err: any) => {
+      if (err.response.status === 422) {
+        Object.assign(errors, err.response.data.errors)
+      }
+      throw err //一直抛，一直抛，直到有人处理，或者决定不处理
+    }
+    const refBtnDisabled = ref(false)
     const onSendValidateCode = async (e: Event) => {
       console.log('发送请求')
-      const res = await axios.post('/api/v1/validation_codes', { email: formData.email })
+      refBtnDisabled.value = true
+      const res = await http
+        .post('/validation_codes', { email: formData.email })
+        .catch(onError)
+        .finally(() => {
+          refBtnDisabled.value = false
+        })
+      validationCodeRef.value.sendCode()
       console.log('res:', res)
     }
+
     return () => (
       <MainLayout>
         {{
@@ -56,12 +73,14 @@ export const SignInPage = defineComponent({
                   errors={errors.email?.[0]}
                 />
                 <FormItem
+                  ref={validationCodeRef}
                   label="验证码"
                   kind="validationCode"
                   placeholder="请输入六位数字"
                   v-model={formData.code}
                   errors={errors.code?.[0]}
                   onClick={onSendValidateCode}
+                  buttonDisabled={refBtnDisabled.value}
                   timeFrom={3}
                 />
                 <FormItem style={{ paddingTop: '96px' }}>

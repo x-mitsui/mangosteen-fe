@@ -16,23 +16,25 @@ export const FormItem = defineComponent({
     placeholder: String,
     options: Array as PropType<Array<{ value: string; text: string }>>,
     onClick: { type: Function as PropType<(e: Event) => void> },
-    timeFrom: { type: Number as PropType<number>, default: 60 }
+    timeFrom: { type: Number as PropType<number>, default: 60 },
+    buttonDisabled: { type: Boolean as PropType<boolean> }
   },
   setup(props, context) {
     const timer = ref<number>(0)
     // console.log(props.timeFrom)
     const count = ref<number>(props.timeFrom)
     const isCounting = computed(() => !!timer.value)
-    const sendCodeClick = () => {
-      props.onClick?.()
+    const sendCode = () => {
       timer.value = setInterval(() => {
         count.value--
         if (count.value === 0) {
           clearInterval(timer.value)
           timer.value = 0
+          count.value = props.timeFrom
         }
       }, 1000)
     }
+    context.expose({ sendCode })
     const content = (kind: KindType) => {
       switch (kind) {
         case 'text':
@@ -72,9 +74,9 @@ export const FormItem = defineComponent({
             <div class={s.validationCodeWrap}>
               <input class={[s.formInput, s.validationCodeInput]} placeholder={props.placeholder} />
               <Button
-                disabled={isCounting.value}
+                disabled={props.buttonDisabled || isCounting.value}
                 class={[s.validationCodeButton]}
-                onClick={sendCodeClick}
+                onClick={props.onClick}
               >
                 {isCounting.value ? `${count.value}秒后可再发送` : '发送验证码'}
               </Button>
