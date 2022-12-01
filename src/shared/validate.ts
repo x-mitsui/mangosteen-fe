@@ -24,8 +24,9 @@ const validate = <T extends FormData>(formData: T, rules: Rules<T>) => {
         break
       case 'pattern':
         // 这里ts推测错误，这里断言value非空
-        if (!isEmpty(value) && rule.reg.test(value!.toString())) {
-          errors[key]?.push(rule.message)
+        if (!isEmpty(value) && !rule.reg.test(value!.toString())) {
+          errors[key] = errors[key] ?? []
+          errors[key]?.push(message)
         }
         break
     }
@@ -35,6 +36,13 @@ const validate = <T extends FormData>(formData: T, rules: Rules<T>) => {
 const isEmpty = (value: string | number | null | undefined | FormData) => {
   return value === '' || value === null || value === undefined
 }
-
+const hasError = (errors: Record<string, string[]>) => {
+  for (let item of Object.values(errors)) {
+    if (item.length != 0) {
+      return true
+    }
+  }
+  return false
+}
 export type { Rules, Rule }
-export { validate }
+export { validate, hasError }
