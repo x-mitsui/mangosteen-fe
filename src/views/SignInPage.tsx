@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 import { defineComponent, reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useBool } from '../hooks/useBool'
 import { MainLayout } from '../layouts/MainLayout'
 import { Button } from '../shared/Button'
@@ -19,6 +20,7 @@ export const SignInPage = defineComponent({
       code: []
     })
     const validationCodeRef = ref()
+    const router = useRouter()
 
     const onSubmit = async (e: Event) => {
       e.preventDefault()
@@ -37,8 +39,12 @@ export const SignInPage = defineComponent({
       if (hasError(errors)) {
         return
       }
-      const response = await http.post('/session', formData)
-      console.log(response)
+      const response = await http.post<{ jwt: string }>('/session', formData).catch(onError)
+      const jwt = response.data.jwt
+
+      localStorage.setItem('jwt', jwt)
+
+      router.push(localStorage.getItem('return_to') || '/')
     }
     const onError = (err: any) => {
       if (err.response.status === 422) {
@@ -85,7 +91,6 @@ export const SignInPage = defineComponent({
                 <Icon class={s.icon} name="mangosteen" />
                 <h1 class={s.appName}>山竹记账</h1>
               </div>
-              <h2>{JSON.stringify(formData)}</h2>
               <Form onSubmit={onSubmit}>
                 <FormItem
                   label="邮箱地址"
