@@ -1,13 +1,19 @@
 import { RouterLink } from 'vue-router'
+import { SkipFeature } from '../../shared/SkipFeature'
 
 import { WelcomeFooter } from './WelcomeFooter'
 const slots = {
   buttons: () => (
     <>
-      <RouterLink to="/start">完成</RouterLink>
-      <RouterLink to="/start" style="visibility:hidden">
-        跳过
-      </RouterLink>
+      <span
+        onClick={() => {
+          localStorage.setItem('skip', 'yes')
+        }}
+      >
+        <RouterLink to="/start">完成</RouterLink>
+      </span>
+
+      <SkipFeature style="visibility:hidden" />
     </>
   )
 }
