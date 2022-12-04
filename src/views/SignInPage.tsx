@@ -1,12 +1,13 @@
 import axios, { AxiosResponse } from 'axios'
 import { defineComponent, reactive, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useBool } from '../hooks/useBool'
 import { MainLayout } from '../layouts/MainLayout'
 import { Button } from '../shared/Button'
 import { Form, FormItem } from '../shared/Form'
 import { http } from '../shared/Http'
 import { Icon } from '../shared/Icon'
+import { refreshMe } from '../shared/RefreshMe'
 import { hasError, validate } from '../shared/validate'
 import s from './SignInPage.module.scss'
 export const SignInPage = defineComponent({
@@ -21,6 +22,7 @@ export const SignInPage = defineComponent({
     })
     const validationCodeRef = ref()
     const router = useRouter()
+    const route = useRoute()
 
     const onSubmit = async (e: Event) => {
       e.preventDefault()
@@ -43,8 +45,14 @@ export const SignInPage = defineComponent({
       const jwt = response.data.jwt
 
       localStorage.setItem('jwt', jwt)
-
-      router.push(localStorage.getItem('return_to') || '/')
+      refreshMe().then(
+        () => {
+          router.push(route.query.return_to?.toString() || '/')
+        },
+        (err) => {
+          alert('登录失败')
+        }
+      )
     }
     const onError = (err: any) => {
       if (err.response.status === 422) {
