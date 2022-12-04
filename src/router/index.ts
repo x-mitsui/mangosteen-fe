@@ -19,6 +19,8 @@ import { TagCreate } from '../components/tag/TagCreate'
 import { TagEdit } from '../components/tag/TagEdit'
 import { SignInPage } from '../views/SignInPage'
 import { Statistics } from '../components/statistics/StatisticsPage'
+import { http } from '../shared/Http'
+import { fetchMe, mePromise } from '../shared/RefreshMe'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/welcome' },
@@ -41,6 +43,7 @@ const routes: RouteRecordRaw[] = [
     path: '/item',
     name: 'item',
     component: ItemPage,
+
     children: [
       {
         path: '/item/create',
@@ -87,4 +90,21 @@ export const router = createRouter({
   // 4. 内部提供了 history 模式的实现。为了简单起见，我们在这里使用 hash 模式。
   history: createWebHashHistory(),
   routes // `routes: routes` 的缩写
+})
+fetchMe()
+router.beforeEach(async (to, from) => {
+  if (
+    to.path.startsWith('/welcome') ||
+    to.path.startsWith('/sign_in') ||
+    to.path === '/' ||
+    to.path === '/start'
+  ) {
+    return true
+  } else {
+    const path = await mePromise!.then(
+      () => true,
+      () => '/sign_in?return_to' + to.path
+    )
+    return path
+  }
 })
