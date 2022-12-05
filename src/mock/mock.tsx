@@ -25,7 +25,8 @@ export const mockMe: Mock = (config) => {
 }
 
 export const mockTagIndex: Mock = (config) => {
-  const { kind } = config.params
+  let { kind, page } = config.params
+  page = page || 1
   let id = 0
   const createId = () => {
     return id++
@@ -39,11 +40,16 @@ export const mockTagIndex: Mock = (config) => {
       ...attr
     }))
   }
-
-  return [
-    200,
-    {
-      resources: config.params.kind === 'expenses' ? createTags(7) : createTags(20)
-    }
-  ]
+  if (kind === 'expenses' && (!page || page === 1)) {
+    return [200, { resources: createTags(25), pager: { page: 1, per_page: 25, count: 26 } }]
+  }
+  if (kind === 'expenses' && page === 2) {
+    return [200, { resources: createTags(1), pager: { page: 2, per_page: 25, count: 26 } }]
+  }
+  if (kind === 'income' && (!page || page === 1)) {
+    return [200, { resources: createTags(25), pager: { page: 1, per_page: 25, count: 26 } }]
+  }
+  // if (kind === 'income' && page === 2) {
+  return [200, { resources: createTags(1), pager: { page: 2, per_page: 25, count: 26 } }]
+  // }
 }

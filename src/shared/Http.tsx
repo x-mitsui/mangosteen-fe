@@ -32,7 +32,7 @@ const mock = (response: AxiosResponse) => {
     location.hostname !== 'localhost' &&
     location.hostname !== '127.0.0.1' &&
     location.hostname !== '192.168.1.103' &&
-    location.hostname !== '192.168.1.4'
+    location.hostname !== '192.168.1.9'
   ) {
     return false
   }
