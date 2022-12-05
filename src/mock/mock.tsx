@@ -24,10 +24,10 @@ export const mockMe: Mock = (config) => {
   ]
 }
 
+let id = 0
 export const mockTagIndex: Mock = (config) => {
   let { kind, page } = config.params
   page = page || 1
-  let id = 0
   const createId = () => {
     return id++
   }
