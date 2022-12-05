@@ -4,9 +4,7 @@ import { http } from './Http'
 export let mePromise: Promise<AxiosResponse<{ resource: { id: string } }, any>> | undefined
 
 export const refreshMe = () => {
-  mePromise = http.get<{ resource: { id: string } }>('/me', {
-    _mock: 'me'
-  })
+  mePromise = http.get<{ resource: { id: string } }>('/me')
   return mePromise
 }
 
