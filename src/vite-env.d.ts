@@ -16,3 +16,12 @@ type Tag = {
   kind: 'expense' | 'income'
   delete_at: string | null
 }
+
+type Resources<T = any> = {
+  resources: T
+  pager: {
+    page: number
+    per_page: number
+    count: number
+  }
+}
