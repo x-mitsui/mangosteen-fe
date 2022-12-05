@@ -50,7 +50,9 @@ export const Tabs = defineComponent({
               )
             })}
           </ul>
-          {tabs.find((tab) => props.selected === tab.props?.name)}
+          {tabs.map((tab) => (
+            <tab v-show={props.selected === tab.props?.name} />
+          ))}
         </div>
       )
     }
