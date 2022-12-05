@@ -7,7 +7,8 @@ import { useTags } from './useTags'
 export const Tags = defineComponent({
   name: 'Tags',
   props: {
-    kind: { type: String as PropType<'expenses' | 'income'>, required: true }
+    kind: { type: String as PropType<'expenses' | 'income'>, required: true },
+    selectedTagId: Number
   },
   setup(props, context) {
     const fetcher = (kind: 'expenses' | 'income', page: number) =>
@@ -18,10 +19,13 @@ export const Tags = defineComponent({
       })
 
     const { tags, pageHasMore, fetchData } = useTags(fetcher, { kind: props.kind })
+    const onSelect = (id: number) => {
+      context.emit('update:selectedTagId', id)
+    }
     return () => (
       <>
         <div class={s.tags_wrapper}>
-          <div class={[s.tag, s.selected]}>
+          <div class={s.tag}>
             <div class={s.sign}>
               <Icon name="add"></Icon>
             </div>
@@ -29,8 +33,8 @@ export const Tags = defineComponent({
           </div>
           {tags.value.map((tag) => {
             return (
-              <div class={s.tag}>
-                <div class={s.sign}>{tag.sign}</div>
+              <div class={s.tag} onClick={() => onSelect(tag.id)}>
+                <div class={[s.sign, tag.id === props.selectedTagId && s.selected]}>{tag.sign}</div>
                 <span class={s.name}>{tag.name}</span>
               </div>
             )

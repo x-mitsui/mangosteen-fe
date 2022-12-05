@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+
 import { P1Main } from '../components/welcome/P1Main'
 import { P1Footer } from '../components/welcome/P1Footer'
 // import { P2 } from '../components/welcome/P2'
@@ -19,7 +20,7 @@ import { TagCreate } from '../components/tag/TagCreate'
 import { TagEdit } from '../components/tag/TagEdit'
 import { SignInPage } from '../views/SignInPage'
 import { Statistics } from '../components/statistics/StatisticsPage'
-import { http } from '../shared/Http'
+// import { http } from '../shared/Http'
 import { fetchMe, mePromise } from '../shared/RefreshMe'
 
 const routes: RouteRecordRaw[] = [
@@ -92,6 +93,7 @@ export const router = createRouter({
   routes // `routes: routes` 的缩写
 })
 fetchMe()
+
 router.beforeEach(async (to, from) => {
   if (
     to.path.startsWith('/welcome') ||
