@@ -34,4 +34,10 @@ type ResourceError<T = any> = {
   errors: Record<string, string[]>
 }
 
-type ItemType = 'expenses' | 'income'
+type ItemKind = 'expenses' | 'income'
+type Item = {
+  tags_id: number[]
+  happened_at: string
+  amount: number
+  kind: ItemKind
+}
