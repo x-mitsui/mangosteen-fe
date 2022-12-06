@@ -27,9 +27,33 @@ export const Tags = defineComponent({
     const createItem = () => {
       router.push(`/tag/create?kind=${props.kind}`)
     }
+    const longTouch = (id: number) => {
+      router.push(
+        `/tag/${id}/edit?return_url=${router.currentRoute.value.fullPath}&kind=${props.kind}`
+      )
+    }
+    let timer: undefined | number
+    let currentTag: HTMLDivElement
+    const onTouchstart = (e: TouchEvent, id: number) => {
+      currentTag = e.target as HTMLDivElement
+      timer = setTimeout(() => {
+        longTouch(id)
+      }, 500)
+    }
+    const onTouchend = () => {
+      clearTimeout(timer)
+      timer = undefined
+    }
+    const onTouchmove = (e: TouchEvent) => {
+      const pointedElement = document.elementFromPoint(e.touches[0].clientX, e.touches[0].clientY)
+      // contains是核心，它判断currentTag元素包不包含点击的元素
+      if (currentTag !== pointedElement && currentTag?.contains(pointedElement) === false) {
+        clearTimeout(timer)
+      }
+    }
     return () => (
       <>
-        <div class={s.tags_wrapper}>
+        <div class={s.tags_wrapper} onTouchmove={onTouchmove}>
           <div class={s.tag} onClick={createItem}>
             <div class={s.sign}>
               <Icon name="add"></Icon>
@@ -38,7 +62,14 @@ export const Tags = defineComponent({
           </div>
           {tags.value.map((tag) => {
             return (
-              <div class={s.tag} onClick={() => onSelect(tag.id)}>
+              <div
+                class={s.tag}
+                onClick={() => onSelect(tag.id)}
+                onTouchstart={(e) => {
+                  onTouchstart(e, tag.id)
+                }}
+                onTouchend={onTouchend}
+              >
                 <div class={[s.sign, tag.id === props.selectedTagId && s.selected]}>{tag.sign}</div>
                 <span class={s.name}>{tag.name}</span>
               </div>
