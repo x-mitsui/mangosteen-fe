@@ -3,6 +3,7 @@ import { defineComponent, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useBool } from '../hooks/useBool'
 import { MainLayout } from '../layouts/MainLayout'
+import { BackBtn } from '../shared/BackBtn'
 import { Button } from '../shared/Button'
 import { Form, FormItem } from '../shared/Form'
 import { http } from '../shared/Http'
@@ -92,7 +93,7 @@ export const SignInPage = defineComponent({
       <MainLayout>
         {{
           title: () => '登录',
-          icon: () => <Icon name="back" />,
+          icon: () => <BackBtn />,
           main: () => (
             <div class={s.wrapper}>
               <div class={s.logo}>

@@ -6,6 +6,7 @@ import s from './TagStyle.module.scss'
 import { Button } from '../../shared/Button'
 import { Rule, validate } from '../../shared/validate'
 import { Form, FormItem } from '../../shared/Form'
+import { BackBtn } from '../../shared/BackBtn'
 export const TagForm = defineComponent({
   name: 'TagForm',
   props: {
@@ -24,9 +25,6 @@ export const TagForm = defineComponent({
       [k in keyof typeof formData]?: string[]
     }>()
 
-    const goBack = () => {
-      router.push('/start')
-    }
     const onSubmit = (e: Event) => {
       e.preventDefault()
       const rule1: Rule<typeof formData> = {
@@ -54,7 +52,7 @@ export const TagForm = defineComponent({
       <MainLayout>
         {{
           title: () => props.title,
-          icon: (kclass: string) => <Icon name="back" class={kclass} onClick={goBack} />,
+          icon: (kclass: string) => <BackBtn class={kclass} />,
           main: () => (
             <Form>
               <FormItem
