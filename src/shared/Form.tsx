@@ -5,7 +5,7 @@ import { Button } from './Button'
 import { DateSelector } from './DateSelector'
 import s from './Form.module.scss'
 import { Time } from './time'
-type KindType = 'text' | 'emojiSelected' | 'date' | 'validationCode' | 'select' | undefined
+type KindType = 'text' | 'signSelected' | 'date' | 'validationCode' | 'select' | undefined
 export const FormItem = defineComponent({
   name: 'FormItem',
   props: {
