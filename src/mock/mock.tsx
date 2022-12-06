@@ -81,3 +81,20 @@ export const mockItemCreate: Mock = (config) => {
     }
   ]
 }
+
+export const mockTagCreate: Mock = (config) => {
+  return [
+    200,
+    {
+      resource: {
+        id: 86,
+        user_id: 41,
+        name: 'x',
+        sign: 'x',
+        delete_at: null,
+        created_at: '2022-12-03T16:02:55.843Z',
+        updated_at: '2022-12-03T16:02:55.843Z'
+      }
+    }
+  ]
+}

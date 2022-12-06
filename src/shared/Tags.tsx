@@ -1,4 +1,5 @@
 import { defineComponent, PropType } from 'vue'
+import { useRouter } from 'vue-router'
 import { Button } from './Button'
 import { http } from './Http'
 import { Icon } from './Icon'
@@ -11,6 +12,7 @@ export const Tags = defineComponent({
     selectedTagId: Number
   },
   setup(props, context) {
+    const router = useRouter()
     const fetcher = (kind: ItemKind, page: number) =>
       http.get<Resources<Tag[]>>('/item', {
         kind,
@@ -22,10 +24,13 @@ export const Tags = defineComponent({
     const onSelect = (id: number) => {
       context.emit('update:selectedTagId', id)
     }
+    const createItem = () => {
+      router.push(`/tag/create?kind=${props.kind}`)
+    }
     return () => (
       <>
         <div class={s.tags_wrapper}>
-          <div class={s.tag}>
+          <div class={s.tag} onClick={createItem}>
             <div class={s.sign}>
               <Icon name="add"></Icon>
             </div>

@@ -22,7 +22,6 @@ export const DateSelector = defineComponent({
           placeholder={props.modelValue.format()}
           onClick={() => {
             refShowPop.value = true
-            console.log('11111111')
           }}
           class={[s.formItem, s.formInput]}
         />
