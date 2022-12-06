@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import { MainLayout } from '../../layouts/MainLayout'
 import { BackBtn } from '../../shared/BackBtn'
 import { http } from '../../shared/Http'
+import { onFormError } from '../../shared/onFormError'
 import { Tab, Tabs } from '../../shared/Tabs'
 import { Tags } from '../../shared/Tags'
 import { InputPad } from './InputPad'
@@ -21,22 +22,21 @@ export const ItemCreate = defineComponent({
       amount: 0,
       kind: 'expenses'
     })
-    const onError = (err: AxiosError<ResourceError>) => {
-      if (err.response?.status === 422) {
-        Dialog.alert({
-          title: '请求参数错误',
-          message: Object.values(err.response.data.errors)
-            .map((error) => error.join(','))
-            .join('\n')
-        }).then(() => {
-          // on close
-        })
-      }
+    const errorFunc = (data: ResourceError) => {
+      Dialog.alert({
+        title: '请求参数错误',
+        message: Object.values(data.errors)
+          .map((error) => error.join(','))
+          .join('\n')
+      }).then(() => {
+        // on close
+      })
     }
+
     const onSubmit = async () => {
       const res = await http
         .post<Resource<Item>>('/items', formData, { params: { _mock: 'itemCreate' } })
-        .catch(onError)
+        .catch((err) => onFormError(err, errorFunc))
       router.push('/item/list')
     }
 

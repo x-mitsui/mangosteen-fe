@@ -8,6 +8,7 @@ import { Button } from '../shared/Button'
 import { Form, FormItem } from '../shared/Form'
 import { http } from '../shared/Http'
 import { Icon } from '../shared/Icon'
+import { onFormError } from '../shared/onFormError'
 import { refreshMe } from '../shared/RefreshMe'
 import { hasError, validate } from '../shared/validate'
 import s from './SignInPage.module.scss'
@@ -24,7 +25,9 @@ export const SignInPage = defineComponent({
     const validationCodeRef = ref()
     const router = useRouter()
     const route = useRoute()
-
+    const errorFunc = (data: ResourceError) => {
+      Object.assign(errors, data.errors)
+    }
     const onSubmit = async (e: Event) => {
       e.preventDefault()
       Object.assign(errors, {
@@ -42,7 +45,13 @@ export const SignInPage = defineComponent({
       if (hasError(errors)) {
         return
       }
-      const response = await http.post<{ jwt: string }>('/session', formData).catch(onError)
+      const response = await http
+        .post<{ jwt: string }>('/session', formData)
+        .catch((err) => onFormError(err, errorFunc))
+      if (!response) {
+        alert('建立会话失败~')
+        return
+      }
       const jwt = response.data.jwt
 
       localStorage.setItem('jwt', jwt)
@@ -55,12 +64,7 @@ export const SignInPage = defineComponent({
         }
       )
     }
-    const onError = (err: any) => {
-      if (err.response.status === 422) {
-        Object.assign(errors, err.response.data.errors)
-      }
-      throw err //一直抛，一直抛，直到有人处理，或者决定不处理
-    }
+
     const { on: setBtnDisabled, off: setBtnEnabled, refVal } = useBool(false)
     const onSendValidateCode = async (e: Event) => {
       Object.assign(errors, {
@@ -81,7 +85,7 @@ export const SignInPage = defineComponent({
       setBtnDisabled()
       const res = await http
         .post('/validation_codes', { email: formData.email })
-        .catch(onError)
+        .catch((err) => onFormError(err, errorFunc))
         .finally(() => {
           setBtnEnabled()
         })
