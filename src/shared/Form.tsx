@@ -49,7 +49,7 @@ export const FormItem = defineComponent({
               }}
             />
           )
-        case 'emojiSelected':
+        case 'signSelected':
           return (
             <EmojiSelected
               emojiTable={emojiTable}
@@ -109,7 +109,7 @@ export const FormItem = defineComponent({
     }
     return () => (
       <label class={s.label}>
-        <span class={[s.formItem_name, props.kind === 'emojiSelected' && 'emoji-font-conf']}>
+        <span class={[s.formItem_name, props.kind === 'signSelected' && 'emoji-font-conf']}>
           {props.label}
         </span>
         <div class={s.formItem_value}>{content(props.kind)}</div>
