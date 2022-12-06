@@ -63,6 +63,7 @@ export const TagForm = defineComponent({
           { params: { _mock: 'tagCreate' } }
         )
         .catch((err) => onFormError(err, errFunc))
+      router.back()
     }
     return () => (
       <MainLayout>
