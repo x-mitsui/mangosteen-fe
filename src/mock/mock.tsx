@@ -55,12 +55,28 @@ export const mockTagIndex: Mock = (config) => {
 }
 
 export const mockItemCreate: Mock = (config) => {
+  // return [
+  //   422,
+  //   {
+  //     errors: {
+  //       tags_id: ['标签id必填', '标签id不合法'],
+  //       kind: ['类型必填', '类型不正确']
+  //     }
+  //   }
+  // ]
   return [
-    422,
+    200,
     {
-      errors: {
-        tags_id: ['标签id必填', '标签id不合法'],
-        kind: ['类型必填', '类型不正确']
+      resource: {
+        id: 75,
+        user_id: 35,
+        amount: 9900,
+        note: null,
+        tags_id: [68, 69],
+        happened_at: '2020-10-29T16:00:00.000Z',
+        created_at: '2022-12-03T16:02:55.480Z',
+        updated_at: '2022-12-03T16:02:55.480Z',
+        kind: 'expenses'
       }
     }
   ]

@@ -9,27 +9,13 @@ import { Tab, Tabs } from '../../shared/Tabs'
 import { Tags } from '../../shared/Tags'
 import { InputPad } from './InputPad'
 import s from './ItemCreate.module.scss'
-type FormData = {
-  tags_id: number[]
-  happened_at: string
-  amount: number
-  kind: ItemType
-}
-type ItemCreateResult = {
-  id: number
-  user_id: number
-  amount: number
-  note: null | string
-  tags_id: number[]
-  happened_at: string
-  kind: ItemType
-}
+
 export const ItemCreate = defineComponent({
   setup(props, context) {
     const router = useRouter()
     const refSelectedValue = ref('支出')
 
-    const formData = reactive<FormData>({
+    const formData = reactive<Item>({
       tags_id: [],
       happened_at: new Date().toISOString(),
       amount: 0,
@@ -51,7 +37,7 @@ export const ItemCreate = defineComponent({
     }
     const onSubmit = async () => {
       const res = await http
-        .post<Resource<ItemCreateResult>>('/items', formData, { params: { _mock: 'itemCreate' } })
+        .post<Resource<Item>>('/items', formData, { params: { _mock: 'itemCreate' } })
         .catch(onError)
       console.log('res', res)
     }

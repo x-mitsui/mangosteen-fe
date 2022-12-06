@@ -7,11 +7,11 @@ import { useTags } from './useTags'
 export const Tags = defineComponent({
   name: 'Tags',
   props: {
-    kind: { type: String as PropType<ItemType>, required: true },
+    kind: { type: String as PropType<ItemKind>, required: true },
     selectedTagId: Number
   },
   setup(props, context) {
-    const fetcher = (kind: ItemType, page: number) =>
+    const fetcher = (kind: ItemKind, page: number) =>
       http.get<Resources<Tag[]>>('/item', {
         kind,
         page,
