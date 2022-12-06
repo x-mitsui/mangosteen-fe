@@ -2,11 +2,11 @@ import { AxiosResponse } from 'axios'
 import { onMounted, ref } from 'vue'
 
 type Fetcher = (
-  kind: 'expenses' | 'income',
+  kind: ItemType,
   page: number
 ) => Promise<void | AxiosResponse<Resources<Tag[]>, any>>
 
-export const useTags = (fetcher: Fetcher, config: { kind: 'expenses' | 'income' }) => {
+export const useTags = (fetcher: Fetcher, config: { kind: ItemType }) => {
   const tags = ref<Tag[]>([])
   const curPage = ref(0)
   const pageHasMore = ref(false)

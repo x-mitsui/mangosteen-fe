@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { router } from '../router'
-import { mockIsOn, mockSession, mockMe, mockTagIndex } from '../mock/mock'
+import { mockIsOn, mockSession, mockMe, mockTagIndex, mockItemCreate } from '../mock/mock'
 type GetConfig = Omit<AxiosRequestConfig, 'params' | 'url' | 'method'>
 type PostConfig = Omit<AxiosRequestConfig, 'url' | 'data' | 'method'>
 type PatchConfig = Omit<AxiosRequestConfig, 'url' | 'data'>
@@ -32,14 +32,11 @@ const mock = (response: AxiosResponse) => {
     location.hostname !== 'localhost' &&
     location.hostname !== '127.0.0.1' &&
     location.hostname !== '192.168.1.103' &&
-    location.hostname !== '192.168.1.9'
+    location.hostname !== '192.168.1.4'
   ) {
     return false
   }
   switch (response.config?.params?._mock) {
-    // case 'itemCreate':
-    //   ;[response.status, response.data] = mockItemCreate(response.config)
-    //   return true
     // case 'itemIndex':
     //   ;[response.status, response.data] = mockItemIndex(response.config)
     //   return true
@@ -53,6 +50,9 @@ const mock = (response: AxiosResponse) => {
       return true
     case 'tagIndex':
       ;[response.status, response.data] = mockTagIndex(response.config)
+      return true
+    case 'itemCreate':
+      ;[response.status, response.data] = mockItemCreate(response.config)
       return true
   }
   return false
@@ -74,7 +74,12 @@ if (mockIsOn) {
       return response
     },
     (error) => {
+      // debugger
       if (mock(error.response)) {
+        // 422的就别按return来正常处理了，当error处理，这一条件if是为mock错误信息422使用的
+        if (error.response.status === 422) {
+          throw error
+        }
         return error.response
       } else {
         throw error

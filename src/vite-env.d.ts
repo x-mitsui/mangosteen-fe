@@ -25,3 +25,13 @@ type Resources<T = any> = {
     count: number
   }
 }
+
+type Resource<T = any> = {
+  resource: T
+}
+
+type ResourceError<T = any> = {
+  errors: Record<string, string[]>
+}
+
+type ItemType = 'expenses' | 'income'

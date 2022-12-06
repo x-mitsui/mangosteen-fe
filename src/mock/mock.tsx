@@ -53,3 +53,15 @@ export const mockTagIndex: Mock = (config) => {
   return [200, { resources: createTags(1), pager: { page: 2, per_page: 25, count: 26 } }]
   // }
 }
+
+export const mockItemCreate: Mock = (config) => {
+  return [
+    422,
+    {
+      errors: {
+        tags_id: ['标签id必填', '标签id不合法'],
+        kind: ['类型必填', '类型不正确']
+      }
+    }
+  ]
+}

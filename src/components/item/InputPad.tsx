@@ -1,4 +1,4 @@
-import { defineComponent, ref } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 import s from './InputPad.module.scss'
 import { DatetimePicker, Popup, Switch } from 'vant'
 import { Icon } from '../../shared/Icon'
@@ -6,7 +6,8 @@ import { Icon } from '../../shared/Icon'
 export const InputPad = defineComponent({
   props: {
     happenAt: String,
-    amount: Number
+    amount: Number,
+    onSubmit: Function as PropType<() => void>
   },
   setup(props, context) {
     const minDate = new Date(2020, 0, 1)
@@ -37,6 +38,7 @@ export const InputPad = defineComponent({
         refInfoValue.value.money = '0'
       } else {
         context.emit('update:amount', parseFloat(refInfoValue.value.money) * 100)
+        props.onSubmit?.()
       }
     }
 
