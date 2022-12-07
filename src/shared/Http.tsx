@@ -6,7 +6,8 @@ import {
   mockMe,
   mockTagIndex,
   mockItemCreate,
-  mockTagCreate
+  mockTagCreate,
+  mockTagShow
 } from '../mock/mock'
 type GetConfig = Omit<AxiosRequestConfig, 'params' | 'url' | 'method'>
 type PostConfig = Omit<AxiosRequestConfig, 'url' | 'data' | 'method'>
@@ -62,11 +63,19 @@ const mock = (response: AxiosResponse) => {
       return true
     case 'tagCreate':
       ;[response.status, response.data] = mockTagCreate(response.config)
+      return true
+    case 'tagUpdate':
+      ;[response.status, response.data] = mockTagCreate(response.config)
+      return true
+    case 'tagShow':
+      ;[response.status, response.data] = mockTagShow(response.config)
+      return true
   }
   return false
 }
 
 export const http = new Http('/api/v1')
+
 http.instance.interceptors.request.use((config) => {
   const jwt = localStorage.getItem('jwt')
   if (jwt) {

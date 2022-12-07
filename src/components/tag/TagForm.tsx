@@ -1,4 +1,4 @@
-import { defineComponent, PropType, reactive, ref } from 'vue'
+import { defineComponent, onMounted, PropType, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { MainLayout } from '../../layouts/MainLayout'
 import s from './TagStyle.module.scss'
@@ -14,19 +14,26 @@ export const TagForm = defineComponent({
     title: {
       type: String as PropType<string>,
       required: true
-    }
+    },
+    id: String
   },
   setup(props, context) {
     const router = useRouter()
     const route = useRoute()
-    const formData = reactive({
+    const formData = reactive<Partial<Tag>>({
       name: '',
       sign: ''
     })
     const errors = ref<{
       [k in keyof typeof formData]?: string[]
     }>()
-
+    onMounted(async () => {
+      if (props.id) {
+        const response = await http.get<Resource<Tag>>(`/tags/${props.id}`, { _mock: 'tagShow' })
+        console.log('response:', response)
+        Object.assign(formData, response?.data.resource)
+      }
+    })
     const onSubmit = async (e: Event) => {
       e.preventDefault()
       const rule1: Rule<typeof formData> = {
@@ -56,13 +63,32 @@ export const TagForm = defineComponent({
       }
 
       const { kind } = route.query
-      const res = await http
-        .post<Resource<Tag>>(
-          '/tags',
-          { kind: kind!.toString(), ...formData },
-          { params: { _mock: 'tagCreate' } }
-        )
-        .catch((err) => onFormError(err, errFunc))
+      if (props.id) {
+        await http
+          .patch<Resource<Tag>>(
+            '/tags' + props.id,
+            {
+              kind: kind!.toString(),
+              name: formData.name!,
+              sign: formData.sign!
+            },
+            { params: { _mock: 'tagUpdate' } }
+          )
+          .catch((err) => onFormError(err, errFunc))
+      } else {
+        await http
+          .post<Resource<Tag>>(
+            '/tags',
+            {
+              kind: kind!.toString(),
+              name: formData.name!,
+              sign: formData.sign!
+            },
+            { params: { _mock: 'tagCreate' } }
+          )
+          .catch((err) => onFormError(err, errFunc))
+      }
+
       router.back()
     }
     return () => (
