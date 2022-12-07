@@ -42,3 +42,8 @@ type Item = {
   amount: number
   kind: ItemKind
 }
+
+type User = {
+  id: number;
+  email: string;
+}

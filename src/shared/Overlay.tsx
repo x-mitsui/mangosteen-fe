@@ -1,4 +1,7 @@
-import { defineComponent, PropType, ref } from 'vue'
+import { defineComponent, onMounted, PropType, ref } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
+import { router } from '../router'
+import { http } from './Http'
 import { Icon } from './Icon'
 import s from './Overlay.module.scss'
 export const Overlay = defineComponent({
@@ -9,13 +12,34 @@ export const Overlay = defineComponent({
     }
   },
   setup(props, context) {
+    const refMe = ref<User>()
+    onMounted(async () => {
+      const response = await http.get<Resource<User>>('/me')
+      refMe.value = response.data.resource
+    })
+    const onSignOut = () => {
+      localStorage.removeItem('jwt')
+      router.push('/sign_in?return_to=' + route.path)
+    }
+    const route = useRoute()
     return () => (
       <div class={s.wrapper}>
         <div class={s.showPage}>
+          <h2>{route.fullPath}</h2>
           <section>
-            <span class={s.up}>未登录用户</span>
-            <span class={s.down}>点击这里登录</span>
+            {refMe.value ? (
+              <div>
+                <h2>{refMe.value.email}</h2>
+                <p onClick={onSignOut}>点击这里退出登录</p>
+              </div>
+            ) : (
+              <RouterLink to={'/sign_in?return_to=' + route.path}>
+                <span class={s.up}>未登录用户</span>
+                <span class={s.down}>点击这里登录</span>
+              </RouterLink>
+            )}
           </section>
+
           <ul class={s.funcList}>
             <li class={s.item}>
               <Icon name="charts"></Icon>
