@@ -1,3 +1,4 @@
+import { Dialog } from 'vant'
 import { defineComponent, onMounted, PropType, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { router } from '../router'
@@ -17,7 +18,11 @@ export const Overlay = defineComponent({
       const response = await http.get<Resource<User>>('/me')
       refMe.value = response.data.resource
     })
-    const onSignOut = () => {
+    const onSignOut = async () => {
+      await Dialog.confirm({
+        title: '确认',
+        message: '你真的要退出登录吗？'
+      })
       localStorage.removeItem('jwt')
       router.push('/sign_in?return_to=' + route.path)
     }
