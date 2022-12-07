@@ -1,9 +1,13 @@
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, reactive, ref, watch } from 'vue'
 import { FloatButton } from '../../shared/FloatButton'
+import { http } from '../../shared/Http'
+import { onFormError } from '../../shared/onFormError'
 import s from './ItemSummary.module.scss'
 export const ItemSummary = defineComponent({
   name: 'ItemSummary',
   props: {
+    // 控制进入界面是否立即请求,lazy即不立即请求
+    refStartLoad: { type: Boolean, default: true },
     startDate: {
       type: String as PropType<string>,
       required: true
@@ -14,6 +18,43 @@ export const ItemSummary = defineComponent({
     }
   },
   setup: (props, context) => {
+    const itemsList = reactive<Item[]>([])
+    const refPage = ref(0)
+    const hasMore = ref(false)
+    const { startDate, endDate } = props
+
+    const fetcher = async (page: number) => {
+      return await http
+        .get<Resources<Item[]>>('/items', {
+          page,
+          created_after: startDate,
+          created_before: endDate,
+          _mock: 'itemIndex'
+        })
+        .catch((err) => onFormError(err, (errors: ResourceError<any>) => {}))
+    }
+    const loadMore = async () => {
+      const response = await fetcher(refPage.value + 1)
+      if (!response) return
+      const { resources, pager } = response.data
+      const { page, per_page, count } = pager
+      refPage.value = page
+      console.log('page:', page)
+      hasMore.value = (page - 1) * per_page + resources.length < count
+      itemsList.push(...response.data.resources)
+    }
+    watch(
+      () => props.refStartLoad,
+      (newValue) => {
+        if (newValue === true) {
+          loadMore()
+        }
+      }
+    )
+    if (props.refStartLoad) {
+      loadMore()
+    }
+
     return () => (
       <div class={s.wrapper}>
         <ul class={s.total}>
@@ -31,80 +72,26 @@ export const ItemSummary = defineComponent({
           </li>
         </ul>
         <ol class={s.list}>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>2000-01-01 12:39</div>
-            </div>
-          </li>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>2000-01-01 12:39</div>
-            </div>
-          </li>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>2000-01-01 12:39</div>
-            </div>
-          </li>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>2000-01-01 12:39</div>
-            </div>
-          </li>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>2000-01-01 12:39</div>
-            </div>
-          </li>
-          <li>
-            <div class={s.sign}>
-              <span>X</span>
-            </div>
-            <div class={s.text}>
-              <div class={s.tagAndAmount}>
-                <span class={s.tag}>旅行</span>
-                <span class={s.amount}>￥1234</span>
-              </div>
-              <div class={s.time}>2000-01-01 12:39</div>
-            </div>
-          </li>
+          {itemsList.map((item) => {
+            return (
+              <li>
+                <div class={s.sign}>
+                  <span>{item.tags_id[0]}</span>
+                </div>
+                <div class={s.text}>
+                  <div class={s.tagAndAmount}>
+                    <span class={s.tag}>{item.tags_id[0]}</span>
+                    <span class={s.amount}>{'￥' + item.amount}</span>
+                  </div>
+                  <div class={s.time}>{new Date(item.happened_at).toLocaleDateString()}</div>
+                </div>
+              </li>
+            )
+          })}
         </ol>
-        <div class={s.more}>向下滑动加载更多</div>
+        <div class={s.more} onClick={loadMore} v-show={hasMore.value}>
+          向下滑动加载更多
+        </div>
         <FloatButton IconName="add" to="/item/create" />
       </div>
     )
