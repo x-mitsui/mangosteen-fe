@@ -37,6 +37,7 @@ type ResourceError<T = any> = {
 type ItemKind = 'expenses' | 'income'
 type Item = {
   tags_id: number[]
+  tags?: Tag[]
   happened_at: string
   amount: number
   kind: ItemKind

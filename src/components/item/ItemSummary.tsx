@@ -1,4 +1,5 @@
 import { defineComponent, onMounted, PropType, reactive, ref, watch } from 'vue'
+import { Button } from '../../shared/Button'
 import { Datetime } from '../../shared/Datetime'
 import { FloatButton } from '../../shared/FloatButton'
 import { http } from '../../shared/Http'
@@ -29,7 +30,7 @@ export const ItemSummary = defineComponent({
       income: 0,
       balance: 0
     })
-    onMounted(async () => {
+    const fetchItemsBalance = async () => {
       const response = await http.get('/items/balance', {
         happen_after: props.startDate,
         happen_before: props.endDate,
@@ -37,6 +38,9 @@ export const ItemSummary = defineComponent({
         _mock: 'itemIndexBalance'
       })
       Object.assign(itemsBalance, response.data)
+    }
+    onMounted(async () => {
+      await fetchItemsBalance()
     })
 
     const fetcher = async (page: number) => {
@@ -63,6 +67,7 @@ export const ItemSummary = defineComponent({
       () => props.refStartLoad,
       (newValue) => {
         if (newValue === true) {
+          fetchItemsBalance()
           loadMore()
         }
       }
@@ -100,11 +105,11 @@ export const ItemSummary = defineComponent({
             return (
               <li>
                 <div class={s.sign}>
-                  <span>{item.tags_id[0]}</span>
+                  <span>{item.tags![0].sign}</span>
                 </div>
                 <div class={s.text}>
                   <div class={s.tagAndAmount}>
-                    <span class={s.tag}>{item.tags_id[0]}</span>
+                    <span class={s.tag}>{item.tags![0].name}</span>
                     <span class={s.amount}>
                       ￥<Money value={item.amount} />
                     </span>
@@ -117,9 +122,10 @@ export const ItemSummary = defineComponent({
             )
           })}
         </ol>
-        <div class={s.more} onClick={loadMore} v-show={hasMore.value}>
-          向下滑动加载更多
+        <div class={s.more}>
+          {hasMore.value ? <Button onClick={loadMore}>加载更多</Button> : <span>没有更多了</span>}
         </div>
+
         <FloatButton IconName="add" to="/item/create" />
       </div>
     )
