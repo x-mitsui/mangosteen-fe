@@ -1,4 +1,4 @@
-import { defineComponent, PropType, reactive, ref, watch } from 'vue'
+import { defineComponent, onMounted, PropType, reactive, ref, watch } from 'vue'
 import { Datetime } from '../../shared/Datetime'
 import { FloatButton } from '../../shared/FloatButton'
 import { http } from '../../shared/Http'
@@ -24,6 +24,20 @@ export const ItemSummary = defineComponent({
     const refPage = ref(0)
     const hasMore = ref(false)
     const { startDate, endDate } = props
+    const itemsBalance = reactive({
+      expenses: 0,
+      income: 0,
+      balance: 0
+    })
+    onMounted(async () => {
+      const response = await http.get('/items/balance', {
+        happen_after: props.startDate,
+        happen_before: props.endDate,
+        page: refPage.value + 1,
+        _mock: 'itemIndexBalance'
+      })
+      Object.assign(itemsBalance, response.data)
+    })
 
     const fetcher = async (page: number) => {
       return await http
@@ -53,24 +67,32 @@ export const ItemSummary = defineComponent({
         }
       }
     )
-    if (props.refStartLoad) {
-      loadMore()
-    }
+    onMounted(() => {
+      if (props.refStartLoad) {
+        loadMore()
+      }
+    })
 
     return () => (
       <div class={s.wrapper}>
         <ul class={s.total}>
           <li>
             <span>收入</span>
-            <span>128</span>
+            <span>
+              <Money value={itemsBalance.income} />
+            </span>
           </li>
           <li>
             <span>支出</span>
-            <span>99</span>
+            <span>
+              <Money value={itemsBalance.expenses} />
+            </span>
           </li>
           <li>
             <span>净收入</span>
-            <span>39</span>
+            <span>
+              <Money value={itemsBalance.balance} />
+            </span>
           </li>
         </ul>
         <ol class={s.list}>

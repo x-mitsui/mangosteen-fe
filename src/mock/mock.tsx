@@ -117,6 +117,17 @@ export const mockTagShow: Mock = (config) => {
   ]
 }
 
+export const mockItemIndexBalance: Mock = (config) => {
+  return [
+    200,
+    {
+      expenses: 9900,
+      income: 9900,
+      balance: 0
+    }
+  ]
+}
+
 export const mockItemIndex: Mock = (config) => {
   const { kind, page } = config.params
   const per_page = 25
