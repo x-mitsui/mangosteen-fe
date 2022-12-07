@@ -12,7 +12,7 @@ export const BackBtn = defineComponent({
     const router = useRouter()
     const onClick = () => {
       if (route.query.return_to) {
-        router.push(route.query.return_to.toString())
+        router.push(decodeURIComponent(route.query.return_to.toString()))
         return
       }
       router.back()

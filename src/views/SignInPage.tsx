@@ -57,7 +57,9 @@ export const SignInPage = defineComponent({
       localStorage.setItem('jwt', jwt)
       refreshMe().then(
         () => {
-          router.push(route.query.return_to?.toString() || '/')
+          router.push(
+            route.query.return_to ? decodeURIComponent(route.query.return_to.toString()) : '/'
+          )
         },
         (err) => {
           alert('登录失败')

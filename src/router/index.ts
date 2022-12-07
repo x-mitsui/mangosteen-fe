@@ -105,7 +105,7 @@ router.beforeEach(async (to, from) => {
   } else {
     const path = await mePromise!.then(
       () => true,
-      () => '/sign_in?return_to' + to.path
+      () => '/sign_in?return_to' + encodeURIComponent(to.path)
     )
     return path
   }

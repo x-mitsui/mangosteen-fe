@@ -24,7 +24,8 @@ export const Overlay = defineComponent({
         message: '你真的要退出登录吗？'
       })
       localStorage.removeItem('jwt')
-      router.push('/sign_in?return_to=' + route.path)
+      router.push('/sign_in?return_to=' + encodeURIComponent(route.path))
+      // router.push('/sign_in')
     }
     const route = useRoute()
     return () => (
@@ -38,7 +39,7 @@ export const Overlay = defineComponent({
                 <p onClick={onSignOut}>点击这里退出登录</p>
               </div>
             ) : (
-              <RouterLink to={'/sign_in?return_to=' + route.path}>
+              <RouterLink to={'/sign_in?return_to=' + encodeURIComponent(route.path)}>
                 <span class={s.up}>未登录用户</span>
                 <span class={s.down}>点击这里登录</span>
               </RouterLink>
