@@ -14,8 +14,8 @@
 */
 export class Time {
   date: Date
-  constructor(date = new Date()) {
-    this.date = date
+  constructor(date: string | Date = new Date()) {
+    this.date = typeof date === 'string' ? new Date(date) : date
   }
   format(pattern = 'YYYY-MM-DD') {
     // 目前支持的格式有 YYYY MM DD HH mm ss SSS
