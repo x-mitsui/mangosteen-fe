@@ -49,7 +49,7 @@ export const Overlay = defineComponent({
           <ul class={s.funcList}>
             <li class={s.item}>
               <Icon name="charts"></Icon>
-              <span>统计图表</span>
+              <RouterLink to="/statistics">统计图表</RouterLink>
             </li>
             <li class={s.item}>
               <Icon name="export"></Icon>

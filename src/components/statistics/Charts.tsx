@@ -1,7 +1,6 @@
 import { defineComponent, onMounted, PropType, ref } from 'vue'
 import { FormItem } from '../../shared/Form'
 import s from './Charts.module.scss'
-import * as echarts from 'echarts'
 import { LineChart } from './LineChart'
 import { PieChart } from './PieChart'
 import { Bars } from './Bars'
@@ -9,6 +8,10 @@ import { Bars } from './Bars'
 export const Charts = defineComponent({
   name: 'Charts',
   props: {
+    refStartLoad: {
+      type: Boolean,
+      default: false
+    },
     startDate: {
       type: String as PropType<string>,
       required: true

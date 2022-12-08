@@ -55,6 +55,7 @@ export const TimeTabsLayout = defineComponent({
               <Tabs
                 selected={refTabSelected.value}
                 classPrefix="customTabs"
+                chooseHardRender={true}
                 onUpdate:selected={(name: string) => {
                   refTabSelected.value = name
                   if (name === '自定义时间') {

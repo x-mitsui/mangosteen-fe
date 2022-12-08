@@ -10,6 +10,10 @@ export const Tabs = defineComponent({
     classPrefix: {
       type: String,
       default: ''
+    },
+    chooseHardRender: {
+      type: Boolean,
+      default: false
     }
   },
   emits: ['update:selected'],
@@ -50,9 +54,11 @@ export const Tabs = defineComponent({
               )
             })}
           </ul>
-          {tabs.map((tab) => (
-            <tab v-show={props.selected === tab.props?.name} />
-          ))}
+          {props.chooseHardRender ? (
+            <div key={props.selected}>{tabs.find((tab) => props.selected === tab.props?.name)}</div>
+          ) : (
+            tabs.map((tab) => <tab v-show={props.selected === tab.props?.name} />)
+          )}
         </div>
       )
     }
