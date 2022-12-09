@@ -60,7 +60,7 @@ export const InputPad = defineComponent({
           <DatetimePicker
             type="date"
             title="选择年月日"
-            model:value={refInfoValue.value.time}
+            modelValue={refInfoValue.value.time}
             min-date={minDate}
             max-date={maxDate}
             onCancel={() => {
