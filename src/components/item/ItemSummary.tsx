@@ -32,8 +32,8 @@ export const ItemSummary = defineComponent({
     })
     const fetchItemsBalance = async () => {
       const response = await http.get('/items/balance', {
-        happen_after: props.startDate,
-        happen_before: props.endDate,
+        happened_after: props.startDate,
+        happened_before: props.endDate,
         page: refPage.value + 1,
         _mock: 'itemIndexBalance'
       })

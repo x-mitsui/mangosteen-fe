@@ -80,11 +80,6 @@ export const LineChart = defineComponent({
         }
       )
     })
-    return () => (
-      <>
-        <h2>{props.data}</h2>
-        <div ref={refDiv} class={s.wrapper}></div>
-      </>
-    )
+    return () => <div ref={refDiv} class={s.wrapper}></div>
   }
 })
