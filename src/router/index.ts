@@ -22,6 +22,7 @@ import { SignInPage } from '../views/SignInPage'
 import { Statistics } from '../components/statistics/StatisticsPage'
 // import { http } from '../shared/Http'
 import { fetchMe, mePromise } from '../shared/RefreshMe'
+import { ComingSoon } from '../shared/ComingSoon'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/welcome' },
@@ -84,6 +85,14 @@ const routes: RouteRecordRaw[] = [
     path: '/statistics',
     name: 'statistics',
     component: Statistics
+  },
+  {
+    path: '/export',
+    component: ComingSoon
+  },
+  {
+    path: '/notify',
+    component: ComingSoon
   }
 ]
 
