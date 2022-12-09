@@ -31,12 +31,15 @@ export const ItemSummary = defineComponent({
       balance: 0
     })
     const fetchItemsBalance = async () => {
-      const response = await http.get('/items/balance', {
-        happened_after: props.startDate,
-        happened_before: props.endDate,
-        page: refPage.value + 1,
-        _mock: 'itemIndexBalance'
-      })
+      const response = await http.get(
+        '/items/balance',
+        {
+          happened_after: props.startDate,
+          happened_before: props.endDate,
+          page: refPage.value + 1
+        },
+        { _mock: 'itemIndexBalance' }
+      )
       Object.assign(itemsBalance, response.data)
     }
     onMounted(async () => {

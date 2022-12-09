@@ -14,11 +14,14 @@ export const Tags = defineComponent({
   setup(props, context) {
     const router = useRouter()
     const fetcher = (kind: ItemKind, page: number) =>
-      http.get<Resources<Tag[]>>('/item', {
-        kind,
-        page,
-        _mock: 'tagIndex'
-      })
+      http.get<Resources<Tag[]>>(
+        '/item',
+        {
+          kind,
+          page
+        },
+        { _mock: 'tagIndex' }
+      )
 
     const { tags, pageHasMore, fetchData } = useTags(fetcher, { kind: props.kind })
     const onSelect = (id: number) => {

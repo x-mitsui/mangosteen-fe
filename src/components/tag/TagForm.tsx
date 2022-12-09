@@ -29,7 +29,11 @@ export const TagForm = defineComponent({
     }>()
     onMounted(async () => {
       if (props.id) {
-        const response = await http.get<Resource<Tag>>(`/tags/${props.id}`, { _mock: 'tagShow' })
+        const response = await http.get<Resource<Tag>>(
+          `/tags/${props.id}`,
+          {},
+          { _mock: 'tagShow' }
+        )
         console.log('response:', response)
         Object.assign(formData, response?.data.resource)
       }
@@ -72,7 +76,7 @@ export const TagForm = defineComponent({
               name: formData.name!,
               sign: formData.sign!
             },
-            { params: { _mock: 'tagUpdate' } }
+            { _mock: 'tagUpdate' }
           )
           .catch((err) => onFormError(err, errFunc))
       } else {
@@ -84,7 +88,7 @@ export const TagForm = defineComponent({
               name: formData.name!,
               sign: formData.sign!
             },
-            { params: { _mock: 'tagCreate' } }
+            { _mock: 'tagCreate' }
           )
           .catch((err) => onFormError(err, errFunc))
       }

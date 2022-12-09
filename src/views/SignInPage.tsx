@@ -86,7 +86,7 @@ export const SignInPage = defineComponent({
       }
       setBtnDisabled()
       const res = await http
-        .post('/validation_codes', { email: formData.email })
+        .post('/validation_codes', { email: formData.email }, { _autoLoading: true })
         .catch((err) => onFormError(err, errorFunc))
         .finally(() => {
           setBtnEnabled()
