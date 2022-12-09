@@ -12,6 +12,8 @@ import {
   mockItemIndexBalance,
   mockItemSummary
 } from '../mock/mock'
+import { Toast } from 'vant'
+import 'vant/es/toast/style'
 type GetConfig = Omit<AxiosRequestConfig, 'params' | 'url' | 'method'>
 type PostConfig = Omit<AxiosRequestConfig, 'url' | 'data' | 'method'>
 type PatchConfig = Omit<AxiosRequestConfig, 'url' | 'data'>
@@ -43,15 +45,11 @@ const mock = (response: AxiosResponse) => {
     location.hostname !== 'localhost' &&
     location.hostname !== '127.0.0.1' &&
     location.hostname !== '192.168.1.103' &&
-    location.hostname !== '192.168.1.4'
+    location.hostname !== '192.168.31.132'
   ) {
     return false
   }
-  switch (response.config?.params?._mock) {
-    // case 'itemIndex':
-    //   ;[response.status, response.data] = mockItemIndex(response.config)
-    //   return true
-
+  switch (response.config?._mock) {
     case 'session':
       ;[response.status, response.data] = mockSession(response.config)
       return true
@@ -93,6 +91,12 @@ http.instance.interceptors.request.use((config) => {
   if (jwt) {
     config.headers!.Authorization = `Bearer ${jwt}`
   }
+  if (config._autoLoading) {
+    Toast.loading({
+      message: '加载中...',
+      forbidClick: true
+    })
+  }
   return config
 })
 if (mockIsOn) {
@@ -116,6 +120,17 @@ if (mockIsOn) {
     }
   )
 }
+
+http.instance.interceptors.response.use(
+  (response) => {
+    Toast.clear()
+    return response
+  },
+  (err) => {
+    Toast.clear()
+    throw err
+  }
+)
 
 http.instance.interceptors.response.use(
   (response) => {
