@@ -16,7 +16,7 @@ export const ItemCreate = defineComponent({
     const router = useRouter()
     const refSelectedValue = ref('支出')
 
-    const formData = reactive<Item>({
+    const formData = reactive<Omit<Item, 'tags'>>({
       tags_id: [],
       happened_at: new Date().toISOString(),
       amount: 0,
@@ -28,14 +28,12 @@ export const ItemCreate = defineComponent({
         message: Object.values(data.errors)
           .map((error) => error.join(','))
           .join('\n')
-      }).then(() => {
-        // on close
       })
     }
 
     const onSubmit = async () => {
-      const res = await http
-        .post<Resource<Item>>('/items', formData, { params: { _mock: 'itemCreate' } })
+      await http
+        .post<Resource<Item>>('/items', formData, { _mock: 'itemCreate' })
         .catch((err) => onFormError(err, errorFunc))
       router.push('/item/list')
     }
