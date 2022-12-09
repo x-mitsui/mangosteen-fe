@@ -46,7 +46,7 @@ export const SignInPage = defineComponent({
         return
       }
       const response = await http
-        .post<{ jwt: string }>('/session', formData)
+        .post<{ jwt: string }>('/session', formData, { _autoLoading: true })
         .catch((err) => onFormError(err, errorFunc))
       if (!response) {
         alert('建立会话失败~')

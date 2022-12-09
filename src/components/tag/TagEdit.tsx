@@ -17,7 +17,8 @@ export const TagEdit = defineComponent({
           ? {
               withItems: options.withItems.toString()
             }
-          : undefined
+          : undefined,
+        { _autoLoading: true }
       )
       router.back()
     }

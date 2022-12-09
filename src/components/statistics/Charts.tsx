@@ -59,7 +59,7 @@ export const Charts = defineComponent({
           kind: kind.value,
           group_by: 'happened_at'
         },
-        { _mock: 'itemSummary' }
+        { _mock: 'itemSummary', _autoLoading: true }
       )
       refData.value = response.data.groups
     }

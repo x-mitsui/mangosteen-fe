@@ -76,7 +76,7 @@ export const TagForm = defineComponent({
               name: formData.name!,
               sign: formData.sign!
             },
-            { _mock: 'tagUpdate' }
+            { _mock: 'tagUpdate', _autoLoading: true }
           )
           .catch((err) => onFormError(err, errFunc))
       } else {
@@ -88,7 +88,7 @@ export const TagForm = defineComponent({
               name: formData.name!,
               sign: formData.sign!
             },
-            { _mock: 'tagCreate' }
+            { _mock: 'tagCreate', _autoLoading: true }
           )
           .catch((err) => onFormError(err, errFunc))
       }

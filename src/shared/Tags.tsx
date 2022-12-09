@@ -20,7 +20,7 @@ export const Tags = defineComponent({
           kind,
           page
         },
-        { _mock: 'tagIndex' }
+        { _mock: 'tagIndex', _autoLoading: true }
       )
 
     const { tags, pageHasMore, fetchData } = useTags(fetcher, { kind: props.kind })
