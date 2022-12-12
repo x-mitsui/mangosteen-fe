@@ -28,7 +28,7 @@ const routes: RouteRecordRaw[] = [
       localStorage.getItem('skip') === 'yes' ? next('/item') : next()
     },
     children: [
-      { path: '', redirect: '/welcome/1' },
+      { path: '/welcome', redirect: '/welcome/1' },
       { path: '1', name: 'Welcome1', components: { main: P1Main, footer: P1Footer } },
       { path: '2', name: 'Welcome2', components: { main: P2Main, footer: P2Footer } },
       { path: '3', name: 'Welcome3', components: { main: P3Main, footer: P3Footer } },
@@ -41,7 +41,7 @@ const routes: RouteRecordRaw[] = [
     component: ItemPage,
 
     children: [
-      { path: '', redirect: '/item/list' },
+      { path: '/item', redirect: '/item/list' },
       {
         path: '/item/list',
         name: 'itemList',
