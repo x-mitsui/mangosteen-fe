@@ -12,6 +12,7 @@
     "@faker-js/faker": "7.6.0",
     "axios": "1.2.0",
     "echarts": "5.3.2",
+    "pinia": "2.0.28",
     "vant": "3.6.4",
     "vue": "3.2.37",
     "vue-router": "4.1.3"

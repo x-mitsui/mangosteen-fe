@@ -9,11 +9,13 @@ import { Form, FormItem } from '../shared/Form'
 import { http } from '../shared/Http'
 import { Icon } from '../shared/Icon'
 import { onFormError } from '../shared/onFormError'
-import { refreshMe } from '../shared/RefreshMe'
+
 import { hasError, validate } from '../shared/validate'
+import { useMeStore } from '../stores/useMeStore'
 import s from './SignInPage.module.scss'
 export const SignInPage = defineComponent({
   setup: (props, context) => {
+    const meStore = useMeStore()
     const formData = reactive({
       email: 'x_mitsui@163.com',
       code: ''
@@ -55,7 +57,7 @@ export const SignInPage = defineComponent({
       const jwt = response.data.jwt
 
       localStorage.setItem('jwt', jwt)
-      refreshMe().then(
+      meStore.refreshMe().then(
         () => {
           router.push(
             route.query.return_to ? decodeURIComponent(route.query.return_to.toString()) : '/'
@@ -92,7 +94,6 @@ export const SignInPage = defineComponent({
           setBtnEnabled()
         })
       validationCodeRef.value.sendCode()
-      console.log('res:', res)
     }
 
     return () => (

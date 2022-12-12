@@ -16,8 +16,9 @@ import { TagCreate } from '../components/tag/TagCreate'
 import { TagEdit } from '../components/tag/TagEdit'
 import { SignInPage } from '../views/SignInPage'
 import { Statistics } from '../components/statistics/StatisticsPage'
-import { fetchMe, mePromise } from '../shared/RefreshMe'
+
 import { ComingSoon } from '../shared/ComingSoon'
+import { useMeStore } from '../stores/useMeStore'
 
 const routes: RouteRecordRaw[] = [
   { path: '/', redirect: '/welcome' },
@@ -96,7 +97,6 @@ export const router = createRouter({
   history: createWebHashHistory(),
   routes // `routes: routes` 的缩写
 })
-fetchMe()
 
 router.beforeEach(async (to, from) => {
   if (
@@ -107,7 +107,8 @@ router.beforeEach(async (to, from) => {
   ) {
     return true
   } else {
-    const path = await mePromise!.then(
+    const meStore = useMeStore()
+    const path = await meStore.mePromise!.then(
       () => true,
       () => '/sign_in?return_to=' + encodeURIComponent(to.path)
     )
