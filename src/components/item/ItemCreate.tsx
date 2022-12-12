@@ -7,6 +7,7 @@ import { http } from '../../shared/Http'
 import { onFormError } from '../../shared/onFormError'
 import { Tab, Tabs } from '../../shared/Tabs'
 import { Tags } from '../../shared/Tags'
+import { hasError, validate } from '../../shared/validate'
 import { InputPad } from './InputPad'
 import s from './ItemCreate.module.scss'
 
@@ -21,6 +22,12 @@ export const ItemCreate = defineComponent({
       amount: 0,
       kind: 'expenses'
     })
+    const errors = reactive<FormErrors<typeof formData>>({
+      kind: [],
+      tag_ids: [],
+      amount: [],
+      happened_at: []
+    })
     const errorFunc = (data: ResourceError) => {
       Dialog.alert({
         title: '请求参数错误',
@@ -31,6 +38,32 @@ export const ItemCreate = defineComponent({
     }
 
     const onSubmit = async () => {
+      Object.assign(errors, {
+        kind: [],
+        tag_ids: [],
+        amount: [],
+        happened_at: []
+      })
+      Object.assign(
+        errors,
+        validate(formData, [
+          { key: 'kind', type: 'required', message: '类型必填' },
+          { key: 'tag_ids', type: 'required', message: '标签必填' },
+          { key: 'tag_ids', type: 'ArrayNotEmpty', message: '标签数组不能为空' },
+          { key: 'amount', type: 'required', message: '金额必填' },
+          { key: 'amount', type: 'notEqual', value: 0, message: '金额不能为零' },
+          { key: 'happened_at', type: 'required', message: '时间必填' }
+        ])
+      )
+      if (hasError(errors)) {
+        Dialog.alert({
+          title: '出错',
+          message: Object.values(errors)
+            .filter((i) => i.length > 0)
+            .join('\n')
+        })
+        return
+      }
       await http
         .post<Resource<Item>>('/items', formData, { _mock: 'itemCreate', _autoLoading: true })
         .catch((err) => onFormError(err, errorFunc))
@@ -44,6 +77,7 @@ export const ItemCreate = defineComponent({
           icon: (kclass: string) => <BackBtn class={kclass} />,
           main: () => (
             <div class={s.wrapper}>
+              <h2>{formData.amount}</h2>
               <Tabs v-model:selected={refSelectedValue.value} class={s.tabs}>
                 <Tab name="支出">
                   <Tags kind="expenses" v-model:selectedTagId={formData.tag_ids[0]} />

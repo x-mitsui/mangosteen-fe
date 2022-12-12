@@ -1,10 +1,15 @@
 interface FormData {
-  [k: string]: string | number | null | undefined | FormData
+  [k: string]: JSONValue
 }
 type Rule<T extends FormData> = {
   key: keyof T
   message: string
-} & ({ type: 'required' } | { type: 'pattern'; reg: RegExp })
+} & (
+  | { type: 'required' }
+  | { type: 'pattern'; reg: RegExp }
+  | { type: 'notEqual'; value: JSONValue }
+  | { type: 'ArrayNotEmpty' }
+)
 type Rules<T extends FormData> = Rule<T>[]
 
 const validate = <T extends FormData>(formData: T, rules: Rules<T>) => {
@@ -29,11 +34,23 @@ const validate = <T extends FormData>(formData: T, rules: Rules<T>) => {
           errors[key]?.push(message)
         }
         break
+      case 'notEqual':
+        if (isEmpty(value) || value === rule.value) {
+          errors[key] = errors[key] ?? []
+          errors[key]?.push(message)
+        }
+        break
+      case 'ArrayNotEmpty':
+        if (!Array.isArray(value) || value.length === 0) {
+          errors[key] = errors[key] ?? []
+          errors[key]?.push(message)
+        }
+        break
     }
   })
   return errors
 }
-const isEmpty = (value: string | number | null | undefined | FormData) => {
+const isEmpty = (value: JSONValue) => {
   return value === '' || value === null || value === undefined
 }
 const hasError = (errors: Record<string, string[]>) => {

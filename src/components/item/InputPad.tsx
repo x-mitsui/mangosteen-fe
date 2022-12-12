@@ -34,10 +34,11 @@ export const InputPad = defineComponent({
           }
           refInfoValue.value.money += key
         }
+        context.emit('update:amount', parseFloat(refInfoValue.value.money) * 100)
       } else if (key === '删除') {
         refInfoValue.value.money = '0'
-      } else {
         context.emit('update:amount', parseFloat(refInfoValue.value.money) * 100)
+      } else {
         props.onSubmit?.()
       }
     }

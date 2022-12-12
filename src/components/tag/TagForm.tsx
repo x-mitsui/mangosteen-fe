@@ -24,9 +24,7 @@ export const TagForm = defineComponent({
       name: '',
       sign: ''
     })
-    const errors = ref<{
-      [k in keyof typeof formData]?: string[]
-    }>()
+    const errors = ref<FormErrors<typeof formData>>()
     onMounted(async () => {
       if (props.id) {
         const response = await http.get<Resource<Tag>>(
