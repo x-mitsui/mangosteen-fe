@@ -41,12 +41,12 @@ export const Tabs = defineComponent({
                 <li
                   key={index}
                   class={[
-                    props.selected === tab.props?.name && s.bgColor,
+                    props.selected === tab.props?.value && s.bgColor,
                     [s.tabs_nav_item, classPrefix + '_tabs_nav_item']
                   ]}
                   onClick={() => {
                     // console.log(tab.props?.name)
-                    context.emit('update:selected', tab.props?.name)
+                    context.emit('update:selected', tab.props?.value)
                   }}
                 >
                   {tab.props?.name}
@@ -55,9 +55,11 @@ export const Tabs = defineComponent({
             })}
           </ul>
           {props.chooseHardRender ? (
-            <div key={props.selected}>{tabs.find((tab) => props.selected === tab.props?.name)}</div>
+            <div key={props.selected}>
+              {tabs.find((tab) => props.selected === tab.props?.value)}
+            </div>
           ) : (
-            tabs.map((tab) => <tab v-show={props.selected === tab.props?.name} />)
+            tabs.map((tab) => <tab v-show={props.selected === tab.props?.value} />)
           )}
         </div>
       )
@@ -68,6 +70,10 @@ export const Tabs = defineComponent({
 export const Tab = defineComponent({
   props: {
     name: {
+      type: String,
+      requred: true
+    },
+    value: {
       type: String,
       requred: true
     }

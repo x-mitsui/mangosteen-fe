@@ -14,7 +14,6 @@ import s from './ItemCreate.module.scss'
 export const ItemCreate = defineComponent({
   setup(props, context) {
     const router = useRouter()
-    const refSelectedValue = ref('支出')
 
     const formData = reactive<Omit<Item, 'tags'>>({
       tag_ids: [],
@@ -77,11 +76,11 @@ export const ItemCreate = defineComponent({
           icon: (kclass: string) => <BackBtn class={kclass} />,
           main: () => (
             <div class={s.wrapper}>
-              <Tabs v-model:selected={refSelectedValue.value} class={s.tabs}>
-                <Tab name="支出">
+              <Tabs v-model:selected={formData.kind} class={s.tabs}>
+                <Tab name="支出" value="expenses">
                   <Tags kind="expenses" v-model:selectedTagId={formData.tag_ids[0]} />
                 </Tab>
-                <Tab name="收入">
+                <Tab name="收入" value="income">
                   <Tags kind="income" v-model:selectedTagId={formData.tag_ids[0]} />
                 </Tab>
               </Tabs>

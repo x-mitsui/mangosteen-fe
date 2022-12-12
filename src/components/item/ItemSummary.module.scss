@@ -52,8 +52,11 @@
       .tag {
         color: var(--list-tag-text);
       }
-      .amount {
+      .amount.expenses {
         color: var(--list-amount-text);
+      }
+      .amount.income {
+        color: var(--total-income);
       }
     }
     .time {

@@ -63,25 +63,25 @@ export const TimeTabsLayout = defineComponent({
                   }
                 }}
               >
-                <Tab name="本月">
+                <Tab name="本月" value="本月">
                   <props.component
                     startDate={dateList[0].start.format()}
                     endDate={dateList[0].end.format()}
                   />
                 </Tab>
-                <Tab name="上个月">
+                <Tab name="上个月" value="上个月">
                   <props.component
                     startDate={dateList[1].start.format()}
                     endDate={dateList[1].end.format()}
                   />
                 </Tab>
-                <Tab name="今年">
+                <Tab name="今年" value="今年">
                   <props.component
                     startDate={dateList[2].start.format()}
                     endDate={dateList[2].end.format()}
                   />
                 </Tab>
-                <Tab name="自定义时间">
+                <Tab name="自定义时间" value="自定义时间">
                   <Overlay show={customOverlayShow.value} class={s.overlay}>
                     <div class={s.overlay_inner}>
                       <header>请选择时间</header>
