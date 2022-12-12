@@ -77,7 +77,6 @@ export const ItemCreate = defineComponent({
           icon: (kclass: string) => <BackBtn class={kclass} />,
           main: () => (
             <div class={s.wrapper}>
-              <h2>{formData.amount}</h2>
               <Tabs v-model:selected={refSelectedValue.value} class={s.tabs}>
                 <Tab name="支出">
                   <Tags kind="expenses" v-model:selectedTagId={formData.tag_ids[0]} />
