@@ -15,7 +15,7 @@ export const TagEdit = defineComponent({
         '/tags/' + id,
         options
           ? {
-              withItems: options.withItems.toString()
+              with_items: options.withItems ? 'true' : 'false'
             }
           : undefined,
         { _autoLoading: true }
