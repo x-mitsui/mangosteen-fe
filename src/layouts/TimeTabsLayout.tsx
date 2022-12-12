@@ -125,7 +125,7 @@ export const TimeTabsLayout = defineComponent({
                     </div>
                   </Overlay>
                   <props.component
-                    refStartLoad={refStartLoad.value}
+                    v-model:refStartLoad={refStartLoad.value}
                     startDate={customDate.start?.format()}
                     endDate={customDate.end?.format()}
                   />

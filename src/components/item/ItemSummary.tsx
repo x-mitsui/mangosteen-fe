@@ -25,9 +25,9 @@ export const ItemSummary = defineComponent({
   },
   setup: (props, context) => {
     const itemsList = ref<Item[]>([])
-    const refPage = ref(0)
+    const refPage = ref<number>(0)
     const hasMore = ref(false)
-    const { startDate, endDate } = props
+
     const router = useRouter()
     const itemsBalance = reactive({
       expenses: 0,
@@ -50,41 +50,45 @@ export const ItemSummary = defineComponent({
       await fetchItemsBalance()
     })
 
-    const fetcher = async (page: number) => {
-      return await http
+    const loadDatas = async (
+      pageNumber = refPage.value + 1,
+      happened_after = props.startDate,
+      happened_before = props.endDate
+    ) => {
+      const response = await http
         .get<Resources<Item[]>>(
           '/items',
           {
-            page,
-            created_after: startDate,
-            created_before: endDate
+            page: pageNumber,
+            happened_after,
+            happened_before
           },
           { _mock: 'itemIndex' }
         )
         .catch((err) => onFormError(err, (errors: ResourceError<any>) => {}))
-    }
-    const loadMore = async () => {
-      const response = await fetcher(refPage.value + 1)
       if (!response) return
       const { resources, pager } = response.data
       const { page, per_page, count } = pager
+
       refPage.value = page
 
       hasMore.value = (page - 1) * per_page + resources.length < count
       itemsList.value.push(...response.data.resources)
     }
+
     watch(
       () => props.refStartLoad,
       (newValue) => {
         if (newValue === true) {
           fetchItemsBalance()
-          loadMore()
+          loadDatas(1)
+          context.emit('update:refStartLoad', false)
         }
       }
     )
     onMounted(() => {
       if (props.refStartLoad) {
-        loadMore()
+        loadDatas(1)
       }
     })
 
@@ -135,7 +139,11 @@ export const ItemSummary = defineComponent({
           })}
         </ol>
         <div class={s.more}>
-          {hasMore.value ? <Button onClick={loadMore}>加载更多</Button> : <span>没有更多了</span>}
+          {hasMore.value ? (
+            <Button onClick={() => loadDatas()}>加载更多</Button>
+          ) : (
+            <span>没有更多了</span>
+          )}
         </div>
 
         <FloatButton IconName="add" to="/item/create" />
