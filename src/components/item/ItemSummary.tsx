@@ -127,7 +127,7 @@ export const ItemSummary = defineComponent({
                       {item.tags && item.tags.length > 0 ? item.tags[0].name : '未分类'}
                     </span>
                     <span class={[s.amount, item.kind === 'expenses' ? s.expenses : s.income]}>
-                      {item.kind === 'expenses' ? '-' : '+'}￥<Money value={item.amount} />
+                      ￥<Money value={item.amount} />
                     </span>
                   </div>
                   <div class={s.time}>
