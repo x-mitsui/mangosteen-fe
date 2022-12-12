@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios'
 import { Dialog } from 'vant'
 import { defineComponent, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -17,7 +16,7 @@ export const ItemCreate = defineComponent({
     const refSelectedValue = ref('支出')
 
     const formData = reactive<Omit<Item, 'tags'>>({
-      tags_id: [],
+      tag_ids: [],
       happened_at: new Date().toISOString(),
       amount: 0,
       kind: 'expenses'
@@ -47,10 +46,10 @@ export const ItemCreate = defineComponent({
             <div class={s.wrapper}>
               <Tabs v-model:selected={refSelectedValue.value} class={s.tabs}>
                 <Tab name="支出">
-                  <Tags kind="expenses" v-model:selectedTagId={formData.tags_id[0]} />
+                  <Tags kind="expenses" v-model:selectedTagId={formData.tag_ids[0]} />
                 </Tab>
                 <Tab name="收入">
-                  <Tags kind="income" v-model:selectedTagId={formData.tags_id[0]} />
+                  <Tags kind="income" v-model:selectedTagId={formData.tag_ids[0]} />
                 </Tab>
               </Tabs>
               <div class={s.inputPad_wrapper}>

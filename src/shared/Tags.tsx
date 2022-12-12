@@ -14,8 +14,8 @@ export const Tags = defineComponent({
   setup(props, context) {
     const router = useRouter()
     const fetcher = (kind: ItemKind, page: number) =>
-      http.get<Resources<Tag[]>>(
-        '/item',
+      http.get<Resources<Item[]>>(
+        '/items',
         {
           kind,
           page

@@ -59,7 +59,7 @@ export const mockItemCreate: Mock = (config) => {
   //   422,
   //   {
   //     errors: {
-  //       tags_id: ['标签id必填', '标签id不合法'],
+  //       tag_ids: ['标签id必填', '标签id不合法'],
   //       kind: ['类型必填', '类型不正确']
   //     }
   //   }
@@ -72,7 +72,7 @@ export const mockItemCreate: Mock = (config) => {
         user_id: 35,
         amount: 9900,
         note: null,
-        tags_id: [68, 69],
+        tag_ids: [68, 69],
         happened_at: '2020-10-29T16:00:00.000Z',
         created_at: '2022-12-03T16:02:55.480Z',
         updated_at: '2022-12-03T16:02:55.480Z',
@@ -148,7 +148,7 @@ export const mockItemIndex: Mock = (config) => {
       id: createId(),
       user_id: createId(),
       amount: Math.floor(Math.random() * 10000),
-      tags_id: [createId()],
+      tag_ids: [createId()],
       tags: [createTag()],
       happened_at: faker.date.past().toISOString(),
       kind
