@@ -2,9 +2,6 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 
 import { P1Main } from '../components/welcome/P1Main'
 import { P1Footer } from '../components/welcome/P1Footer'
-// import { P2 } from '../components/welcome/P2'
-// import { P3 } from '../components/welcome/P3'
-// import { P4 } from '../components/welcome/P4'
 import { Welcome } from '../views/Welcome'
 import { P2Main } from '../components/welcome/P2Main'
 import { P3Main } from '../components/welcome/P3Main'
@@ -12,7 +9,6 @@ import { P4Main } from '../components/welcome/P4Main'
 import { P2Footer } from '../components/welcome/P2Footer'
 import { P3Footer } from '../components/welcome/P3Footer'
 import { P4Footer } from '../components/welcome/P4Footer'
-import { StartPage } from '../views/StartPage'
 import { ItemPage } from '../views/ItemPage'
 import { ItemCreate } from '../components/item/ItemCreate'
 import { ItemList } from '../components/item/ItemList'
@@ -20,7 +16,6 @@ import { TagCreate } from '../components/tag/TagCreate'
 import { TagEdit } from '../components/tag/TagEdit'
 import { SignInPage } from '../views/SignInPage'
 import { Statistics } from '../components/statistics/StatisticsPage'
-// import { http } from '../shared/Http'
 import { fetchMe, mePromise } from '../shared/RefreshMe'
 import { ComingSoon } from '../shared/ComingSoon'
 
@@ -30,7 +25,7 @@ const routes: RouteRecordRaw[] = [
     path: '/welcome',
     component: Welcome,
     beforeEnter: (to, from, next) => {
-      localStorage.getItem('skip') === 'yes' ? next('/start') : next()
+      localStorage.getItem('skip') === 'yes' ? next('/item') : next()
     },
     children: [
       { path: '', redirect: '/welcome/1' },
@@ -40,22 +35,22 @@ const routes: RouteRecordRaw[] = [
       { path: '4', name: 'Welcome4', components: { main: P4Main, footer: P4Footer } }
     ]
   },
-  { path: '/start', name: 'start', component: StartPage },
   {
     path: '/item',
     name: 'item',
     component: ItemPage,
 
     children: [
-      {
-        path: '/item/create',
-        name: 'itemCreate',
-        component: ItemCreate
-      },
+      { path: '', redirect: '/item/list' },
       {
         path: '/item/list',
         name: 'itemList',
         component: ItemList
+      },
+      {
+        path: '/item/create',
+        name: 'itemCreate',
+        component: ItemCreate
       }
     ]
   },
@@ -108,7 +103,7 @@ router.beforeEach(async (to, from) => {
     to.path.startsWith('/welcome') ||
     to.path.startsWith('/sign_in') ||
     to.path === '/' ||
-    to.path === '/start'
+    to.path === '/item'
   ) {
     return true
   } else {

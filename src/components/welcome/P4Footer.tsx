@@ -10,7 +10,7 @@ const slots = {
           localStorage.setItem('skip', 'yes')
         }}
       >
-        <RouterLink to="/start">完成</RouterLink>
+        <RouterLink to="/item">完成</RouterLink>
       </span>
 
       <SkipFeature style="visibility:hidden" />

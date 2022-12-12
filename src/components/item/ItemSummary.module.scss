@@ -66,3 +66,11 @@
   padding-top: 16px;
   text-align: center;
 }
+
+.startWrapper {
+  padding: 16px;
+  > button {
+    margin-top: -20px;
+    width: 100%;
+  }
+}

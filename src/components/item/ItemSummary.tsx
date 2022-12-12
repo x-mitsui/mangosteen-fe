@@ -1,8 +1,11 @@
 import { defineComponent, onMounted, PropType, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { Button } from '../../shared/Button'
+import { Center } from '../../shared/Center'
 import { Datetime } from '../../shared/Datetime'
 import { FloatButton } from '../../shared/FloatButton'
 import { http } from '../../shared/Http'
+import { Icon } from '../../shared/Icon'
 import { Money } from '../../shared/Money'
 import { onFormError } from '../../shared/onFormError'
 import s from './ItemSummary.module.scss'
@@ -21,10 +24,11 @@ export const ItemSummary = defineComponent({
     }
   },
   setup: (props, context) => {
-    const itemsList = reactive<Item[]>([])
+    const itemsList = ref<Item[]>([])
     const refPage = ref(0)
     const hasMore = ref(false)
     const { startDate, endDate } = props
+    const router = useRouter()
     const itemsBalance = reactive({
       expenses: 0,
       income: 0,
@@ -48,12 +52,15 @@ export const ItemSummary = defineComponent({
 
     const fetcher = async (page: number) => {
       return await http
-        .get<Resources<Item[]>>('/items', {
-          page,
-          created_after: startDate,
-          created_before: endDate,
-          _mock: 'itemIndex'
-        })
+        .get<Resources<Item[]>>(
+          '/items',
+          {
+            page,
+            created_after: startDate,
+            created_before: endDate
+          },
+          { _mock: 'itemIndex' }
+        )
         .catch((err) => onFormError(err, (errors: ResourceError<any>) => {}))
     }
     const loadMore = async () => {
@@ -64,7 +71,7 @@ export const ItemSummary = defineComponent({
       refPage.value = page
       console.log('page:', page)
       hasMore.value = (page - 1) * per_page + resources.length < count
-      itemsList.push(...response.data.resources)
+      itemsList.value.push(...response.data.resources)
     }
     watch(
       () => props.refStartLoad,
@@ -81,8 +88,8 @@ export const ItemSummary = defineComponent({
       }
     })
 
-    return () => (
-      <div class={s.wrapper}>
+    const SummaryPage = () => (
+      <>
         <ul class={s.total}>
           <li>
             <span>收入</span>
@@ -104,7 +111,7 @@ export const ItemSummary = defineComponent({
           </li>
         </ul>
         <ol class={s.list}>
-          {itemsList.map((item) => {
+          {itemsList.value.map((item) => {
             return (
               <li>
                 <div class={s.sign}>
@@ -129,6 +136,30 @@ export const ItemSummary = defineComponent({
           {hasMore.value ? <Button onClick={loadMore}>加载更多</Button> : <span>没有更多了</span>}
         </div>
 
+        <FloatButton IconName="add" to="/item/create" />
+      </>
+    )
+
+    const StartPage = () => (
+      <>
+        <Center>
+          <Icon name="pig" class={s.icon} style={'width:50%;height:50%;'} />
+        </Center>
+        <div class={s.startWrapper}>
+          <Button
+            onClick={() => {
+              router.push('/item/create')
+            }}
+          >
+            你好
+          </Button>
+        </div>
+      </>
+    )
+
+    return () => (
+      <div class={s.wrapper}>
+        {itemsList.value && itemsList.value.length > 0 ? <SummaryPage /> : <StartPage />}
         <FloatButton IconName="add" to="/item/create" />
       </div>
     )
