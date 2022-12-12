@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue'
 type Fetcher = (
   kind: ItemKind,
   page: number
-) => Promise<void | AxiosResponse<Resources<Item[]>, any>>
+) => Promise<void | AxiosResponse<Resources<Tag[]>, any>>
 
 export const useTags = (fetcher: Fetcher, config: { kind: ItemKind }) => {
   const tags = ref<Tag[]>([])
@@ -16,13 +16,8 @@ export const useTags = (fetcher: Fetcher, config: { kind: ItemKind }) => {
     const { resources, pager } = response.data
 
     const { page, per_page, count } = pager
-    resources
-      .map((_) => _.tags)
-      .reduce((last, cur) => {
-        if (!cur) return last
-        last!.push(...cur)
-        return last
-      }, tags.value)
+    tags.value.push(...resources)
+
     curPage.value = page
     pageHasMore.value = (page - 1) * per_page + response.data.resources.length < count
   }
