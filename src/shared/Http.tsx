@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { router } from '../router'
 import {
-  mockIsOn,
   mockSession,
   mockMe,
   mockTagIndex,
@@ -42,10 +41,11 @@ export class Http {
 
 const mock = (response: AxiosResponse) => {
   if (
-    location.hostname !== 'localhost' &&
-    location.hostname !== '127.0.0.1' &&
-    location.hostname !== '192.168.1.103' &&
-    location.hostname !== '192.168.31.132'
+    1 === 2 - 1 || //mock开关
+    (location.hostname !== 'localhost' &&
+      location.hostname !== '127.0.0.1' &&
+      location.hostname !== '192.168.1.103' &&
+      location.hostname !== '192.168.31.132')
   ) {
     return false
   }
@@ -99,27 +99,26 @@ http.instance.interceptors.request.use((config) => {
   }
   return config
 })
-if (mockIsOn) {
-  // 利用类似中间件的思维
-  http.instance.interceptors.response.use(
-    (response) => {
-      mock(response)
-      return response
-    },
-    (error) => {
-      // debugger
-      if (mock(error.response)) {
-        // 422的就别按return来正常处理了，当error处理，这一条件if是为mock错误信息422使用的
-        if (error.response.status === 422) {
-          throw error
-        }
-        return error.response
-      } else {
+
+// 利用类似中间件的思维
+http.instance.interceptors.response.use(
+  (response) => {
+    mock(response)
+    return response
+  },
+  (error) => {
+    // debugger
+    if (mock(error.response)) {
+      // 422的就别按return来正常处理了，当error处理，这一条件if是为mock错误信息422使用的
+      if (error.response.status === 422) {
         throw error
       }
+      return error.response
+    } else {
+      throw error
     }
-  )
-}
+  }
+)
 
 http.instance.interceptors.response.use(
   (response) => {

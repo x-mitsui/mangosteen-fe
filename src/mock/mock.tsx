@@ -5,7 +5,6 @@ type Mock = (config: AxiosRequestConfig) => [number, any]
 
 faker.setLocale('zh_CN')
 
-export const mockIsOn = true
 export const mockSession: Mock = (config) => {
   return [
     200,
