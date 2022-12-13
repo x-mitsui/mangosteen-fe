@@ -68,7 +68,7 @@ export const TagForm = defineComponent({
       if (props.id) {
         await http
           .patch<Resource<Tag>>(
-            '/tags' + props.id,
+            '/tags/' + props.id,
             {
               kind: kind!.toString(),
               name: formData.name!,
