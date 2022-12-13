@@ -76,7 +76,6 @@ export const OverlayIcon = defineComponent({
   setup(props, context) {
     const refIsShowOverlay = ref(false)
     const setOverlay = () => {
-      console.log('setOverlay')
       refIsShowOverlay.value = !refIsShowOverlay.value
     }
     return () => (

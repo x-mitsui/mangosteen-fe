@@ -1,5 +1,6 @@
 import { defineComponent, onMounted, PropType, reactive, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAfterMe } from '../../hooks/useAfterMe'
 import { Button } from '../../shared/Button'
 import { Center } from '../../shared/Center'
 import { Datetime } from '../../shared/Datetime'
@@ -46,9 +47,7 @@ export const ItemSummary = defineComponent({
       )
       Object.assign(itemsBalance, response.data)
     }
-    onMounted(async () => {
-      await fetchItemsBalance()
-    })
+    useAfterMe(fetchItemsBalance)
 
     const loadDatas = async (
       pageNumber = refPage.value + 1,
@@ -86,7 +85,7 @@ export const ItemSummary = defineComponent({
         }
       }
     )
-    onMounted(() => {
+    useAfterMe(() => {
       if (props.refStartLoad) {
         loadDatas(1)
       }
