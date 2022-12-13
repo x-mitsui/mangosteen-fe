@@ -103,14 +103,14 @@ router.beforeEach(async (to, from) => {
     to.path.startsWith('/welcome') ||
     to.path.startsWith('/sign_in') ||
     to.path === '/' ||
-    to.path === '/item'
+    to.path === '/item/list'
   ) {
     return true
   } else {
     const meStore = useMeStore()
     const path = await meStore.mePromise!.then(
       () => true,
-      () => '/sign_in?return_to=' + encodeURIComponent(to.path)
+      () => '/sign_in?return_to=' + encodeURIComponent(from.path)
     )
     return path
   }

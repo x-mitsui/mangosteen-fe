@@ -142,9 +142,9 @@ http.instance.interceptors.response.use(
       if (axiosError.response?.status === 429) {
         alert('请求太频繁了')
       }
-      if (axiosError.response?.status === 401) {
-        router.replace('/sign_in')
-      }
+      // if (axiosError.response?.status === 401) {
+      //   router.replace('/sign_in')
+      // }
     }
     // 这一句不能删除，因为这个err可能是其它类型的err，或者状态码有遗漏。
     // 一旦删除这句，那对外部来说，代表你对此err做了处理了，但实际上你没做处理或者直接认为这次请求是成功的
